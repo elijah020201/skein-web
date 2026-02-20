@@ -1,4 +1,7 @@
 ---
+import { SITE_TEXT } from '../../content/site-text.js';
+const P = SITE_TEXT.pro;
+const L = SITE_TEXT.app_login;
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -534,40 +537,40 @@ html, body {
        LOGIN SCREEN
        ============================================================ -->
   <div id="screen-login" class="screen active">
-    <div class="login-wordmark">SKEIN</div>
-    <div class="login-tagline">Your personal grimoire</div>
+    <div class="login-wordmark">{L.wordmark}</div>
+    <div class="login-tagline">{L.tagline}</div>
 
     <div class="login-tabs">
-      <button class="login-tab active" onclick="showLoginTab('enter')">ENTER</button>
-      <button class="login-tab" onclick="showLoginTab('initiate')">INITIATE</button>
+      <button class="login-tab active" onclick="showLoginTab('enter')">{L.tab_enter}</button>
+      <button class="login-tab" onclick="showLoginTab('initiate')">{L.tab_initiate}</button>
     </div>
 
     <div id="login-form">
       <div class="input-group">
-        <div class="label">Email Address</div>
-        <input type="email" id="login-email" placeholder="your@coven.com" autocomplete="email">
+        <div class="label">{L.label_email}</div>
+        <input type="email" id="login-email" placeholder={L.placeholder_email} autocomplete="email">
       </div>
       <div class="input-group">
-        <div class="label">Passphrase</div>
-        <input type="password" id="login-password" placeholder="words of power" autocomplete="current-password">
+        <div class="label">{L.label_password}</div>
+        <input type="password" id="login-password" placeholder={L.placeholder_password} autocomplete="current-password">
       </div>
-      <button class="btn-primary" onclick="handleLogin()">OPEN THE TOME</button>
+      <button class="btn-primary" onclick="handleLogin()">{L.btn_login}</button>
     </div>
 
     <div id="register-form" style="display:none">
       <div class="input-group">
-        <div class="label">Email Address</div>
-        <input type="email" id="reg-email" placeholder="your@coven.com" autocomplete="email">
+        <div class="label">{L.label_email}</div>
+        <input type="email" id="reg-email" placeholder={L.placeholder_email} autocomplete="email">
       </div>
       <div class="input-group">
-        <div class="label">Craft a Passphrase</div>
-        <input type="password" id="reg-password" placeholder="8+ chars, uppercase & symbol" autocomplete="new-password">
+        <div class="label">{L.label_new_password}</div>
+        <input type="password" id="reg-password" placeholder={L.placeholder_new_password} autocomplete="new-password">
       </div>
       <div class="input-group">
-        <div class="label">Confirm Passphrase</div>
-        <input type="password" id="reg-confirm" placeholder="once more, with feeling" autocomplete="new-password">
+        <div class="label">{L.label_confirm_password}</div>
+        <input type="password" id="reg-confirm" placeholder={L.placeholder_confirm_password} autocomplete="new-password">
       </div>
-      <button class="btn-primary" onclick="handleRegister()">BEGIN THE RITE</button>
+      <button class="btn-primary" onclick="handleRegister()">{L.btn_register}</button>
     </div>
 
     <div id="verify-form" style="display:none">
@@ -575,10 +578,10 @@ html, body {
         A verification code has been sent to your email.
       </div>
       <div class="input-group">
-        <div class="label">Verification Code</div>
-        <input type="text" id="verify-code" placeholder="6-digit code" autocomplete="one-time-code" inputmode="numeric">
+        <div class="label">{L.label_verify_code}</div>
+        <input type="text" id="verify-code" placeholder={L.placeholder_verify_code} autocomplete="one-time-code" inputmode="numeric">
       </div>
-      <button class="btn-primary" onclick="handleVerify()">CONSECRATE THE SEAL</button>
+      <button class="btn-primary" onclick="handleVerify()">{L.btn_verify}</button>
     </div>
 
     <div id="login-status" class="status"></div>
@@ -770,37 +773,27 @@ html, body {
   <div id="screen-pro" class="screen">
     <div class="top-bar">
       <button class="back-btn" onclick="navigateBack()">← BACK</button>
-      <span class="wordmark" style="flex:1;text-align:center">SKEIN PRO</span>
+      <span class="wordmark" style="flex:1;text-align:center">{P.screen_title}</span>
       <div style="width:60px"></div>
     </div>
 
     <div class="scroll-area no-nav">
       <div style="text-align:center;padding:var(--pad-xl) 0 var(--pad-lg)">
-        <div style="font-family:var(--font-display);font-size:32px;color:var(--gold-bright);letter-spacing:0.2em;margin-bottom:var(--pad-sm)">◈</div>
-        <div class="heading-display" style="margin-bottom:var(--pad-sm)">UNLOCK THE FULL GRIMOIRE</div>
+        <div style="font-family:var(--font-display);font-size:32px;color:var(--gold-bright);letter-spacing:0.2em;margin-bottom:var(--pad-sm)">{P.glyph}</div>
+        <div class="heading-display" style="margin-bottom:var(--pad-sm)">{P.headline}</div>
         <div class="body-text" style="max-width:320px;margin:0 auto">
-          A single purchase unlocks Skein forever — across all your devices.
+          {P.description}
         </div>
       </div>
 
       <div style="background:var(--surface1);border:1px solid var(--border-gold);padding:var(--pad-lg);margin-bottom:var(--pad-lg)">
         <div style="display:flex;flex-direction:column;gap:var(--pad-sm);margin-bottom:var(--pad-lg)">
-          <div style="display:flex;gap:var(--pad-sm);align-items:center">
-            <span style="color:var(--gold-bright);font-family:var(--font-display)">◈</span>
-            <span class="body-text">Unlimited grimoire entries</span>
-          </div>
-          <div style="display:flex;gap:var(--pad-sm);align-items:center">
-            <span style="color:var(--gold-bright);font-family:var(--font-display)">◈</span>
-            <span class="body-text">Cloud sync across all devices</span>
-          </div>
-          <div style="display:flex;gap:var(--pad-sm);align-items:center">
-            <span style="color:var(--gold-bright);font-family:var(--font-display)">◈</span>
-            <span class="body-text">Desktop + Android + iOS (PWA)</span>
-          </div>
-          <div style="display:flex;gap:var(--pad-sm);align-items:center">
-            <span style="color:var(--gold-bright);font-family:var(--font-display)">◈</span>
-            <span class="body-text">All future updates included</span>
-          </div>
+          {P.features.map((feature: string) => (
+            <div style="display:flex;gap:var(--pad-sm);align-items:center">
+              <span style="color:var(--gold-bright);font-family:var(--font-display)">{P.glyph}</span>
+              <span class="body-text">{feature}</span>
+            </div>
+          ))}
         </div>
         <!-- Gumroad checkout button — replace href with your Gumroad product URL -->
         <a
@@ -813,12 +806,12 @@ html, body {
       </div>
 
       <div style="background:var(--surface1);border:1px solid var(--border);padding:var(--pad-md);margin-bottom:var(--pad-md)">
-        <div class="section-header" style="margin-bottom:var(--pad-md)">ALREADY PURCHASED?</div>
+        <div class="section-header" style="margin-bottom:var(--pad-md)">{P.already_purchased_label}</div>
         <div class="input-group">
           <div class="label">Gumroad License Key</div>
           <input type="text" id="license-key-input" placeholder="XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX" autocomplete="off">
         </div>
-        <button class="btn-ghost" style="width:100%" onclick="activateLicense()">ACTIVATE LICENSE</button>
+        <button class="btn-ghost" style="width:100%" onclick="activateLicense()">{P.btn_activate_license}</button>
         <div id="license-status" class="status"></div>
       </div>
     </div>

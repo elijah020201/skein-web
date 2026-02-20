@@ -4,6 +4,6 @@ import tailwind from '@astrojs/tailwind';
 export default defineConfig({
     integrations: [tailwind()],
     redirects: {
-        '/grimoire': '/grimoire/index.html'
+        '/grimoire': '/app/'
     }
 });
