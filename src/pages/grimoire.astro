@@ -1,8 +1,4 @@
----
-// src/pages/grimoire.astro
-// The full Skein PWA — installable grimoire app
-layout: null
----
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -17,7 +13,7 @@ layout: null
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 
-<style is:inline>
+<style>
 /* ============================================================
    CELESTIAL BLUE DESIGN SYSTEM
    Matches the Unreal app palette exactly
@@ -828,7 +824,7 @@ html, body {
 
 </div><!-- #app -->
 
-<script is:inline>
+<script>
 // ============================================================
 //  CONFIG
 // ============================================================
@@ -870,13 +866,14 @@ const Storage = {
 //  COGNITO AUTH
 // ============================================================
 async function cognitoRequest(body) {
+  const { __type, ...payload } = body;  // strip __type from body, use as header only
   const res = await fetch(COGNITO_URL, {
     method:  'POST',
     headers: {
-      'Content-Type':   'application/x-amz-json-1.1',
-      'X-Amz-Target':   body.__type,
+      'Content-Type': 'application/x-amz-json-1.1',
+      'X-Amz-Target': __type,
     },
-    body: JSON.stringify(body),
+    body: JSON.stringify(payload),
   });
   const data = await res.json();
   if (!res.ok) throw new Error(data.message || data.__type || 'Auth error');
