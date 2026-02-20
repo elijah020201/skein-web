@@ -1,171 +1,26 @@
 ﻿---
 // src/pages/grimoire.astro
-// The Inner Sanctuary - Single Page Application Interface
+layout: null 
 ---
-
 <!DOCTYPE html>
 <html lang="en">
-	<head>
-		<meta charset="UTF-8">
-			<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-				<meta name="apple-mobile-web-app-capable" content="yes">
-					<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-						<meta name="apple-mobile-web-app-title" content="Skein">
-							<meta name="theme-color" content="#010214">
-								<link rel="manifest" href="/manifest.json">
-									<link rel="apple-touch-icon" href="/icon-192.png">
-										<title>Skein — Grimoire</title>
+<head>
+  <meta charset="UTF-8">
+  <title>Skein — Grimoire</title>
+  <style>
+    html, body { 
+      background-color: #010214 !important; 
+      margin: 0; 
+      padding: 0;
+    }
+  </style>
+</head>
+<body>
+  <div id="debug-check" style="color: white; padding: 20px; font-family: sans-serif;">
+    If you see this, the page is loading. 
+  </div>
 
-										<link rel="preconnect" href="https://fonts.googleapis.com">
-											<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
-
-												<style>
-													/* THE CELESTIAL DESIGN SYSTEM
-													Directly injected from your App Soul file
-													*/
-													:root {
-													--bg: #010214;
-													--surface1: #05081f;
-													--surface2: #0a0e2a;
-													--surface3: #0f1535;
-													--border: rgba(255, 255, 255, 0.08);
-													--gold: #d4af37;
-													--gold-dim: #997c23;
-													--silver: #a0a0b0;
-													--electric: #38bdf8;
-													--error: #f43f5e;
-													--success: #10b981;
-													}
-
-													* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-													body, html {
-													margin: 0; padding: 0; width: 100%; height: 100%;
-													background: var(--bg); color: var(--silver);
-													font-family: 'Cormorant Garamond', serif; overflow: hidden;
-													}
-
-													/* Screen Management */
-													.screen {
-													position: absolute; inset: 0;
-													display: none; flex-direction: column;
-													padding: 2rem; padding-top: calc(2rem + env(safe-area-inset-top));
-													overflow-y: auto; opacity: 0; transition: opacity 0.3s ease;
-													}
-													.screen.active { display: flex; opacity: 1; }
-
-													/* The Grimoire Aesthetics */
-													.logo-container { text-align: center; margin-bottom: 3rem; }
-													.logo-container img { width: 120px; filter: drop-shadow(0 0 15px rgba(56, 189, 248, 0.3)); }
-
-													h1, h2, h3 { font-family: 'Cinzel', serif; text-transform: uppercase; letter-spacing: 0.2em; color: var(--gold); }
-
-													input, textarea {
-													background: var(--surface2); border: 1px solid var(--border);
-													color: white; padding: 1rem; border-radius: 8px; font-size: 1rem;
-													width: 100%; margin-bottom: 1rem; outline: none; transition: border 0.3s;
-													}
-													input:focus { border-color: var(--electric); }
-
-													.btn {
-													background: var(--gold); color: var(--bg); border: none;
-													padding: 1rem 2rem; border-radius: 50px; font-family: 'Cinzel', serif;
-													font-weight: 700; cursor: pointer; transition: all 0.2s;
-													text-transform: uppercase; letter-spacing: 0.1em;
-													}
-													.btn:active { transform: scale(0.96); }
-													.btn-ghost { background: transparent; border: 1px solid var(--gold); color: var(--gold); }
-												</style>
-											</head>
-	<body>
-
-		<div id="screen-login" class="screen active">
-			<div class="logo-container">
-				<img src="/logo.png" alt="Skein">
-					<h1>Skein</h1>
-				</div>
-			<div style="max-width: 400px; margin: 0 auto; width: 100%;">
-				<h2>Enter the Sanctuary</h2>
-				<input type="email" id="login-email" placeholder="Email Address">
-					<input type="password" id="login-pass" placeholder="Password">
-						<button class="btn" style="width: 100%;" onclick="handleLogin()">Login</button>
-						<p style="text-align: center; margin-top: 2rem; font-size: 0.8rem; opacity: 0.5;">
-							New seeker? <span style="color: var(--gold); cursor: pointer;" onclick="navigateTo('register')">Register</span>
-						</p>
-					</div>
-		</div>
-
-		<div id="screen-dashboard" class="screen">
-			<header style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
-				<h3>My Grimoire</h3>
-				<button class="btn-ghost" style="padding: 0.5rem 1rem;" onclick="handleLogout()">Exit</button>
-			</header>
-			<div id="entries-list" style="display: grid; gap: 1rem;">
-				<p style="opacity: 0.3; text-align: center;">Your grimoire is empty. Begin a new thread.</p>
-			</div>
-			<button class="btn" style="position: fixed; bottom: 2rem; right: 2rem; border-radius: 50%; width: 60px; height: 60px;" onclick="navigateTo('editor')">+</button>
-		</div>
-
-		<div id="screen-editor" class="screen">
-			<input type="text" id="editor-title" placeholder="Thread Title..." style="font-family: 'Cinzel'; font-size: 1.5rem; background: transparent; border: none; border-bottom: 1px solid var(--border);">
-				<textarea id="editor-content" style="flex: 1; background: transparent; border: none; resize: none;" placeholder="Write your intention..."></textarea>
-				<div style="display: flex; gap: 1rem;">
-					<button class="btn-ghost" style="flex: 1;" onclick="navigateTo('dashboard')">Cancel</button>
-					<button class="btn" style="flex: 1;" onclick="saveEntry()">Save</button>
-				</div>
-			</div>
-
-		<script is:inline="">
-			/* GRIMOIRE LOGIC
-			Injected from your App Soul file
-			*/
-			const state = {
-			currentScreen: 'login',
-			entries: []
-			};
-
-			function navigateTo(screenId) {
-			document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-			document.getElementById(`screen-${screenId}`).classList.add('active');
-			state.currentScreen = screenId;
-			}
-
-			function handleLogin() {
-			// For now, since Lambda isn't live, we will "simulate" entry
-			const email = document.getElementById('login-email').value;
-			if(email) {
-			navigateTo('dashboard');
-			} else {
-			alert("Enter your credentials, seeker.");
-			}
-			}
-
-			function handleLogout() {
-			navigateTo('login');
-			}
-
-			function saveEntry() {
-			const title = document.getElementById('editor-title').value;
-			const content = document.getElementById('editor-content').value;
-			if(title) {
-			state.entries.push({ title, content, date: new Date().toLocaleDateString() });
-			renderEntries();
-			navigateTo('dashboard');
-			// Reset editor
-			document.getElementById('editor-title').value = '';
-			document.getElementById('editor-content').value = '';
-			}
-			}
-
-			function renderEntries() {
-			const list = document.getElementById('entries-list');
-			list.innerHTML = state.entries.map(e => `
-			<div style="background: var(--surface1); padding: 1.5rem; border-radius: 12px; border: 1px solid var(--border);">
-				<h4 style="margin: 0; color: var(--gold);">${e.title}</h4>
-				<p style="font-size: 0.9rem; opacity: 0.7;">${e.date}</p>
-			</div>
-			`).join('');
-			}
-		</script>
-
-	</body>
+  <div id="screen-login" class="screen active">
+     </div>
+</body>
 </html>
