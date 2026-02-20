@@ -1,26 +1,99 @@
 ﻿---
 // src/pages/grimoire.astro
-layout: null 
+// This tells Astro NOT to use your main site's CSS or Layout
+layout: null
 ---
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Skein — Grimoire</title>
-  <style>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap">
+  
+  <style is:inline>
+    /* CSS ISOLATION: We use !important to make sure the landing page styles don't leak in */
+    :root {
+      --bg: #010214;
+      --gold: #d4af37;
+      --silver: #a0a0b0;
+    }
     html, body { 
-      background-color: #010214 !important; 
-      margin: 0; 
-      padding: 0;
+      background: var(--bg) !important; 
+      color: var(--silver) !important;
+      margin: 0; padding: 0; height: 100vh; width: 100vw;
+      font-family: 'Cormorant Garamond', serif;
+      overflow: hidden;
+    }
+    .screen { 
+      display: none; 
+      opacity: 0; 
+      padding: 2rem; 
+      flex-direction: column;
+      height: 100%;
+    }
+    .screen.active { 
+      display: flex; 
+      opacity: 1; 
+    }
+    input { 
+      background: #0a0e2a; 
+      border: 1px solid rgba(255,255,255,0.1); 
+      color: white; padding: 1rem; margin-bottom: 1rem; border-radius: 8px;
+    }
+    .btn { 
+      background: var(--gold); color: var(--bg); padding: 1rem; 
+      border-radius: 50px; border: none; font-family: 'Cinzel'; font-weight: bold; 
+      cursor: pointer; text-transform: uppercase;
     }
   </style>
 </head>
 <body>
-  <div id="debug-check" style="color: white; padding: 20px; font-family: sans-serif;">
-    If you see this, the page is loading. 
+
+  <div id="loading-overlay" style="position:fixed; inset:0; background:var(--bg); display:flex; align-items:center; justify-content:center; z-index:999;">
+    <p style="font-family:'Cinzel'; color:var(--gold); letter-spacing:0.5em; animate: pulse 2s infinite;">Entering Sanctuary...</p>
   </div>
 
-  <div id="screen-login" class="screen active">
-     </div>
+  <div id="screen-login" class="screen">
+    <div style="text-align:center; margin-top: 20%;">
+        <img src="/logo.png" style="width: 100px; margin-bottom: 2rem;">
+        <h1 style="font-family:'Cinzel'; color:var(--gold);">SKEIN</h1>
+        <input type="email" id="login-email" placeholder="Seeker Email">
+        <input type="password" placeholder="Password">
+        <button class="btn" onclick="handleLogin()" style="width:100%">Open Grimoire</button>
+    </div>
+  </div>
+
+  <div id="screen-dashboard" class="screen">
+    <h2 style="font-family:'Cinzel'; color:var(--gold);">Dashboard</h2>
+    <p>Welcome back, seeker.</p>
+    <button class="btn" onclick="location.href='/'">Return to Lobby</button>
+  </div>
+
+  <script is:inline>
+    // THE ENGINE
+    function navigateTo(screenId) {
+      console.log('Navigating to:', screenId);
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      const target = document.getElementById(`screen-${screenId}`);
+      if(target) target.classList.add('active');
+      
+      // Hide the loading overlay once the first screen is ready
+      document.getElementById('loading-overlay').style.display = 'none';
+    }
+
+    function handleLogin() {
+      const email = document.getElementById('login-email').value;
+      if(email) {
+        navigateTo('dashboard');
+      }
+    }
+
+    // BOOTSTRAP: This is what was missing!
+    window.onload = () => {
+      console.log('Skein Initialized');
+      navigateTo('login');
+    };
+  </script>
 </body>
 </html>
