@@ -33,6 +33,9 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
+  // Only handle http/https — ignore chrome-extension://, data:, etc.
+  if (!event.request.url.startsWith('http')) return;
+
   const url = new URL(event.request.url);
 
   // Never cache API calls or Cognito requests — always network

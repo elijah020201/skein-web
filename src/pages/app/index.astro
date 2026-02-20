@@ -795,21 +795,21 @@ html, body {
             </div>
           ))}
         </div>
-        <!-- Gumroad checkout — update gumroad_url in src/content/site-text.js -->
+        <!-- Gumroad checkout button — replace href with your Gumroad product URL -->
         <a
           class="btn-primary"
           style="display:block;text-align:center;text-decoration:none;cursor:pointer"
-          href={P.gumroad_url}
+          href="https://skein.gumroad.com/l/pro"
           target="_blank"
-          id="gumroad-checkout-btn"
-        >{P.btn_purchase}</a>
+          id="gr-checkout-btn"
+        >PURCHASE SKEIN PRO</a>
       </div>
 
       <div style="background:var(--surface1);border:1px solid var(--border);padding:var(--pad-md);margin-bottom:var(--pad-md)">
         <div class="section-header" style="margin-bottom:var(--pad-md)">{P.already_purchased_label}</div>
         <div class="input-group">
-          <div class="label">License Key</div>
-          <input type="text" id="license-key-input" placeholder={P.license_placeholder} autocomplete="off">
+          <div class="label">Gumroad License Key</div>
+          <input type="text" id="license-key-input" placeholder="XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX" autocomplete="off">
         </div>
         <button class="btn-ghost" style="width:100%" onclick="activateLicense()">{P.btn_activate_license}</button>
         <div id="license-status" class="status"></div>
@@ -1556,7 +1556,7 @@ async function triggerFullSync() {
 
 
 // ============================================================
-//  PRO / LICENSE
+//  PRO / LICENSE (Gumroad)
 // ============================================================
 async function checkLicenseStatus() {
   if (!state.userSub) return;
@@ -1574,19 +1574,21 @@ async function checkLicenseStatus() {
 async function activateLicense() {
   const key = document.getElementById('license-key-input').value.trim();
   if (!key) {
-    setLicenseStatus('Enter your license key.', 'error');
+    setLicenseStatus('Enter your Gumroad license key.', 'error');
     return;
   }
   setLicenseStatus('Validating...', 'info');
   try {
-    const result = await apiCall('license:validate', { licenseKey: key });
+    // Verify with Gumroad's license API via backend proxy
+    const result = await apiCall('license:validate', { licenseKey: key, provider: 'gumroad' });
     if (result.isPro) {
       state.isPro = true;
       Storage.save('isPro', true);
+      Storage.save('licenseKey', key);
       setLicenseStatus('License activated! Welcome to Skein Pro.', 'success');
       setTimeout(() => navigateBack(), 1500);
     } else {
-      setLicenseStatus(result.message || 'Invalid or expired license key.', 'error');
+      setLicenseStatus(result.message || 'Invalid or expired Gumroad license key.', 'error');
     }
   } catch(e) {
     setLicenseStatus('Validation failed: ' + e.message, 'error');
