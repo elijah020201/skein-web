@@ -1,15 +1,19 @@
 version: 1
 frontend:
   phases:
+    preBuild:
+      commands:
+        - npm ci
     build:
       commands:
-        - echo "Static PWA — no build step needed"
+        - npm run build
   artifacts:
-    baseDirectory: /
+    baseDirectory: dist
     files:
       - '**/*'
   cache:
-    paths: []
+    paths:
+      - node_modules/**/*
 
 customHeaders:
   - pattern: sw.js
