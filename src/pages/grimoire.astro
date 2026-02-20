@@ -1,6 +1,5 @@
 ﻿---
 // src/pages/grimoire.astro
-// This tells Astro NOT to use your main site's CSS or Layout
 layout: null
 ---
 <!DOCTYPE html>
@@ -9,91 +8,77 @@ layout: null
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Skein — Grimoire</title>
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap">
-  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
   <style is:inline>
-    /* CSS ISOLATION: We use !important to make sure the landing page styles don't leak in */
     :root {
-      --bg: #010214;
-      --gold: #d4af37;
-      --silver: #a0a0b0;
+      --bg: #010214; --surface1: #05081f; --surface2: #0a0e2a; --surface3: #0f1535;
+      --border: rgba(80, 90, 180, 0.18); --border-gold: rgba(132, 107, 45, 0.45);
+      --gold: #845f2d; --gold-bright: #c8a44a; --action: #1e1461;
+      --text-primary: #ebebf7; --text-muted: #7a7fa8; --text-faint: #3d4168;
+      --font-display: 'Cinzel', serif; --font-body: 'Cormorant Garamond', serif;
     }
-    html, body { 
-      background: var(--bg) !important; 
-      color: var(--silver) !important;
-      margin: 0; padding: 0; height: 100vh; width: 100vw;
-      font-family: 'Cormorant Garamond', serif;
-      overflow: hidden;
-    }
-    .screen { 
-      display: none; 
-      opacity: 0; 
-      padding: 2rem; 
-      flex-direction: column;
-      height: 100%;
-    }
-    .screen.active { 
-      display: flex; 
-      opacity: 1; 
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; background: var(--bg); color: var(--text-primary); font-family: var(--font-body); overflow: hidden; }
+
+    #app { height: 100%; display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; position: relative; }
+    .screen { display: none; flex-direction: column; flex: 1; overflow: hidden; padding: 24px; }
+    .screen.active { display: flex; }
+
+    .btn-primary { 
+      width: 100%; padding: 14px; background: var(--action); border: 1px solid var(--border-gold); 
+      color: var(--gold-bright); font-family: var(--font-display); font-size: 11px; cursor: pointer; 
     }
     input { 
-      background: #0a0e2a; 
-      border: 1px solid rgba(255,255,255,0.1); 
-      color: white; padding: 1rem; margin-bottom: 1rem; border-radius: 8px;
-    }
-    .btn { 
-      background: var(--gold); color: var(--bg); padding: 1rem; 
-      border-radius: 50px; border: none; font-family: 'Cinzel'; font-weight: bold; 
-      cursor: pointer; text-transform: uppercase;
+      width: 100%; background: var(--surface2); border: 1px solid var(--border); 
+      color: var(--text-primary); padding: 12px; margin-bottom: 16px; outline: none; 
     }
   </style>
 </head>
 <body>
+  <div id="app">
+    <div id="screen-login" class="screen">
+      <div style="text-align: center; margin-bottom: 40px; margin-top: 40px;">
+        <img src="/logo.png" style="width: 100px; filter: drop-shadow(0 0 15px rgba(56,189,248,0.3));">
+        <h1 style="font-family: var(--font-display); letter-spacing: 0.3em; margin-top: 20px;">SKEIN</h1>
+      </div>
+      <h2 style="font-family: var(--font-display); font-size: 10px; color: var(--text-muted); text-transform: uppercase; margin-bottom: 20px;">Enter the Sanctuary</h2>
+      <input type="email" id="login-email" placeholder="Email Address">
+      <input type="password" id="login-pass" placeholder="Password">
+      <button class="btn-primary" onclick="handleLogin()">Authorize Entry</button>
+    </div>
 
-  <div id="loading-overlay" style="position:fixed; inset:0; background:var(--bg); display:flex; align-items:center; justify-content:center; z-index:999;">
-    <p style="font-family:'Cinzel'; color:var(--gold); letter-spacing:0.5em; animate: pulse 2s infinite;">Entering Sanctuary...</p>
-  </div>
-
-  <div id="screen-login" class="screen">
-    <div style="text-align:center; margin-top: 20%;">
-        <img src="/logo.png" style="width: 100px; margin-bottom: 2rem;">
-        <h1 style="font-family:'Cinzel'; color:var(--gold);">SKEIN</h1>
-        <input type="email" id="login-email" placeholder="Seeker Email">
-        <input type="password" placeholder="Password">
-        <button class="btn" onclick="handleLogin()" style="width:100%">Open Grimoire</button>
+    <div id="screen-dashboard" class="screen">
+      <h1 style="font-family: var(--font-display);">Grimoire</h1>
+      <p style="color: var(--text-muted);">Your threads are syncing...</p>
     </div>
   </div>
 
-  <div id="screen-dashboard" class="screen">
-    <h2 style="font-family:'Cinzel'; color:var(--gold);">Dashboard</h2>
-    <p>Welcome back, seeker.</p>
-    <button class="btn" onclick="location.href='/'">Return to Lobby</button>
-  </div>
-
   <script is:inline>
-    // THE ENGINE
+    const state = { tokens: null, entries: [] };
+
     function navigateTo(screenId) {
-      console.log('Navigating to:', screenId);
       document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
       const target = document.getElementById(`screen-${screenId}`);
-      if(target) target.classList.add('active');
-      
-      // Hide the loading overlay once the first screen is ready
-      document.getElementById('loading-overlay').style.display = 'none';
+      if (target) target.classList.add('active');
     }
 
     function handleLogin() {
       const email = document.getElementById('login-email').value;
-      if(email) {
+      if (email) {
+        // Simulation of Claude's init() logic
         navigateTo('dashboard');
       }
     }
 
-    // BOOTSTRAP: This is what was missing!
-    window.onload = () => {
-      console.log('Skein Initialized');
+    // This replaces Claude's init() function to ensure it runs immediately in Astro
+    window.addEventListener('DOMContentLoaded', () => {
+      console.log("Grimoire Initialized");
+      // In the real app, this check tokens/Cognito first
       navigateTo('login');
-    };
+    });
   </script>
 </body>
 </html>
