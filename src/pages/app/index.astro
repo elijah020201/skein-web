@@ -1,0 +1,1652 @@
+---
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Skein">
+<meta name="theme-color" content="#010214">
+<link rel="manifest" href="/manifest.json">
+<link rel="apple-touch-icon" href="/icon-192.png">
+<title>Skein — Grimoire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+
+<style is:inline>
+/* ============================================================
+   CELESTIAL BLUE DESIGN SYSTEM
+   Matches the Unreal app palette exactly
+   ============================================================ */
+:root {
+  --bg:           #010214;
+  --surface1:     #05081f;
+  --surface2:     #0a0e2a;
+  --surface3:     #0f1535;
+  --border:       rgba(80, 90, 180, 0.18);
+  --border-gold:  rgba(132, 107, 45, 0.45);
+  --gold:         #845f2d;
+  --gold-bright:  #c8a44a;
+  --action:       #1e1461;
+  --text-primary: #ebebf7;
+  --text-muted:   #7a7fa8;
+  --text-faint:   #3d4168;
+  --red:          #6b1010;
+  --red-bright:   #c0392b;
+  --spell:        #8b1a1a;
+  --ritual:       #1a3a5c;
+  --journal:      #4a8fbd;
+  --herbal:       #2d6b3a;
+  --sigil:        #6b4a8b;
+  --tarot:        #7b3a7b;
+  --astro:        #1a2a6b;
+
+  --font-display: 'Cinzel', serif;
+  --font-body:    'Cormorant Garamond', serif;
+
+  --pad-xs: 4px;
+  --pad-sm: 8px;
+  --pad-md: 16px;
+  --pad-lg: 24px;
+  --pad-xl: 32px;
+  --radius: 2px;
+  --nav-h:  60px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+html, body {
+  height: 100%;
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 16px;
+  overflow: hidden;
+}
+
+/* ============================================================
+   APP SHELL
+   ============================================================ */
+#app {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  max-width: 480px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.screen {
+  display: none;
+  flex-direction: column;
+  flex: 1;
+  overflow: hidden;
+}
+.screen.active { display: flex; }
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+.heading-display {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--text-primary);
+}
+.heading-section {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+.label {
+  font-family: var(--font-display);
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.body-text {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+/* ============================================================
+   BUTTONS
+   ============================================================ */
+.btn-primary {
+  width: 100%;
+  padding: 14px var(--pad-lg);
+  background: var(--action);
+  border: 1px solid var(--border-gold);
+  color: var(--gold-bright);
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.btn-primary:hover { background: #2a1d85; }
+
+.btn-ghost {
+  padding: 10px var(--pad-md);
+  background: transparent;
+  border: 1px solid var(--border-gold);
+  color: var(--gold-bright);
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  cursor: pointer;
+}
+.btn-danger {
+  padding: 10px var(--pad-md);
+  background: transparent;
+  border: 1px solid rgba(192, 57, 43, 0.4);
+  color: #c0392b;
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  cursor: pointer;
+}
+
+/* ============================================================
+   INPUTS
+   ============================================================ */
+.input-group { margin-bottom: var(--pad-md); }
+.input-group input,
+.input-group textarea {
+  width: 100%;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 15px;
+  padding: 12px var(--pad-md);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.input-group input:focus,
+.input-group textarea:focus { border-color: var(--gold); }
+.input-group input::placeholder,
+.input-group textarea::placeholder { color: var(--text-faint); }
+.input-group textarea { resize: none; min-height: 100px; }
+
+/* ============================================================
+   STATUS MESSAGE
+   ============================================================ */
+.status {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  padding: var(--pad-sm) 0;
+  min-height: 28px;
+  text-align: center;
+}
+.status.error { color: var(--red-bright); }
+.status.success { color: var(--gold-bright); }
+.status.info { color: var(--text-muted); }
+
+/* ============================================================
+   TOP BAR
+   ============================================================ */
+.top-bar {
+  padding: env(safe-area-inset-top, 12px) var(--pad-md) var(--pad-sm);
+  padding-top: max(env(safe-area-inset-top), 12px);
+  background: var(--surface1);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  gap: var(--pad-sm);
+  flex-shrink: 0;
+}
+.top-bar .wordmark {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  color: var(--gold-bright);
+  flex: 1;
+}
+.top-bar .back-btn {
+  background: none;
+  border: none;
+  color: var(--gold-bright);
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  cursor: pointer;
+  padding: 6px 0;
+}
+
+/* ============================================================
+   SCROLL AREA
+   ============================================================ */
+.scroll-area {
+  flex: 1;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: var(--pad-md);
+  padding-bottom: calc(var(--nav-h) + var(--pad-xl) + env(safe-area-inset-bottom, 0px));
+}
+.scroll-area.no-nav {
+  padding-bottom: var(--pad-xl);
+}
+
+/* ============================================================
+   BOTTOM NAV
+   ============================================================ */
+.bottom-nav {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(var(--nav-h) + env(safe-area-inset-bottom, 0px));
+  background: var(--surface1);
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  padding-top: var(--pad-sm);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  flex-shrink: 0;
+}
+.nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: var(--pad-xs);
+}
+.nav-item .nav-icon {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--text-faint);
+}
+.nav-item .nav-label {
+  font-family: var(--font-display);
+  font-size: 7px;
+  letter-spacing: 0.16em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+.nav-item.active .nav-icon,
+.nav-item.active .nav-label { color: var(--gold-bright); }
+
+/* ============================================================
+   FAB
+   ============================================================ */
+.fab {
+  position: absolute;
+  bottom: calc(var(--nav-h) + var(--pad-md) + env(safe-area-inset-bottom, 0px));
+  right: var(--pad-lg);
+  width: 52px;
+  height: 52px;
+  background: var(--action);
+  border: 1px solid var(--border-gold);
+  color: var(--gold-bright);
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.4);
+  z-index: 10;
+}
+
+/* ============================================================
+   ENTRY CARD
+   ============================================================ */
+.entry-card {
+  background: var(--surface1);
+  border: 1px solid var(--border);
+  padding: var(--pad-md);
+  margin-bottom: var(--pad-sm);
+  cursor: pointer;
+  transition: border-color 0.2s;
+  display: flex;
+  gap: var(--pad-sm);
+}
+.entry-card:hover { border-color: var(--border-gold); }
+.entry-card .type-pip {
+  width: 3px;
+  flex-shrink: 0;
+  border-radius: 2px;
+}
+.entry-card .card-content { flex: 1; min-width: 0; }
+.entry-card .card-title {
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 4px;
+}
+.entry-card .card-meta {
+  font-family: var(--font-display);
+  font-size: 8px;
+  letter-spacing: 0.14em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   TYPE CHIPS (filter)
+   ============================================================ */
+.type-chips {
+  display: flex;
+  gap: var(--pad-xs);
+  overflow-x: auto;
+  padding: var(--pad-sm) var(--pad-md);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  scrollbar-width: none;
+}
+.type-chips::-webkit-scrollbar { display: none; }
+.chip {
+  flex-shrink: 0;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  font-family: var(--font-display);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  cursor: pointer;
+  background: transparent;
+  white-space: nowrap;
+  transition: all 0.15s;
+}
+.chip.active {
+  border-color: var(--gold);
+  color: var(--gold-bright);
+  background: rgba(132, 95, 45, 0.12);
+}
+
+/* ============================================================
+   SECTION DIVIDER
+   ============================================================ */
+.section-header {
+  font-family: var(--font-display);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--gold);
+  text-transform: uppercase;
+  padding: var(--pad-md) 0 var(--pad-sm);
+  border-bottom: 1px solid var(--border-gold);
+  margin-bottom: var(--pad-md);
+}
+
+/* ============================================================
+   EMPTY STATE
+   ============================================================ */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: var(--pad-xl) var(--pad-lg);
+  gap: var(--pad-md);
+  text-align: center;
+}
+.empty-glyph {
+  font-family: var(--font-display);
+  font-size: 32px;
+  color: var(--text-faint);
+  letter-spacing: 0.2em;
+}
+
+/* ============================================================
+   LOADING SPINNER
+   ============================================================ */
+.spinner {
+  width: 28px; height: 28px;
+  border: 2px solid var(--border);
+  border-top-color: var(--gold-bright);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+  margin: var(--pad-xl) auto;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ============================================================
+   LOGIN SCREEN
+   ============================================================ */
+#screen-login {
+  justify-content: center;
+  padding: var(--pad-xl) var(--pad-lg);
+}
+.login-wordmark {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.32em;
+  color: var(--gold-bright);
+  text-align: center;
+  margin-bottom: var(--pad-xs);
+}
+.login-tagline {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 14px;
+  color: var(--text-faint);
+  text-align: center;
+  margin-bottom: var(--pad-xl);
+}
+.login-tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: var(--pad-lg);
+}
+.login-tab {
+  flex: 1;
+  padding: var(--pad-sm);
+  background: none;
+  border: none;
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  color: var(--text-faint);
+  cursor: pointer;
+  text-transform: uppercase;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+}
+.login-tab.active {
+  color: var(--gold-bright);
+  border-bottom-color: var(--gold-bright);
+}
+
+/* ============================================================
+   EDITOR SCREEN
+   ============================================================ */
+.editor-type-strip {
+  display: flex;
+  gap: var(--pad-xs);
+  overflow-x: auto;
+  padding: var(--pad-sm) var(--pad-md);
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  scrollbar-width: none;
+}
+.editor-type-strip::-webkit-scrollbar { display: none; }
+.type-chip {
+  flex-shrink: 0;
+  padding: 5px 12px;
+  border: 1px solid var(--border);
+  font-family: var(--font-display);
+  font-size: 9px;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  cursor: pointer;
+  background: transparent;
+}
+.type-chip.selected {
+  color: var(--text-primary);
+  border-color: var(--gold);
+}
+
+.editor-actions {
+  display: flex;
+  gap: var(--pad-sm);
+  padding: var(--pad-sm) var(--pad-md);
+  border-top: 1px solid var(--border);
+  background: var(--surface1);
+  padding-bottom: max(var(--pad-sm), env(safe-area-inset-bottom));
+  flex-shrink: 0;
+}
+.editor-save {
+  flex: 1;
+}
+
+/* ============================================================
+   SYNC PILL
+   ============================================================ */
+.sync-pill {
+  font-family: var(--font-display);
+  font-size: 8px;
+  letter-spacing: 0.1em;
+  padding: 3px 8px;
+  border: 1px solid var(--border);
+  color: var(--text-faint);
+}
+.sync-pill.synced { color: #2ecc71; border-color: rgba(46, 204, 113, 0.3); }
+.sync-pill.pending { color: var(--gold-bright); border-color: var(--border-gold); }
+.sync-pill.failed { color: var(--red-bright); border-color: rgba(192, 57, 43, 0.3); }
+</style>
+</head>
+
+<body>
+<div id="app">
+
+  <!-- ============================================================
+       LOGIN SCREEN
+       ============================================================ -->
+  <div id="screen-login" class="screen active">
+    <div class="login-wordmark">SKEIN</div>
+    <div class="login-tagline">Your personal grimoire</div>
+
+    <div class="login-tabs">
+      <button class="login-tab active" onclick="showLoginTab('enter')">ENTER</button>
+      <button class="login-tab" onclick="showLoginTab('initiate')">INITIATE</button>
+    </div>
+
+    <div id="login-form">
+      <div class="input-group">
+        <div class="label">Email Address</div>
+        <input type="email" id="login-email" placeholder="your@coven.com" autocomplete="email">
+      </div>
+      <div class="input-group">
+        <div class="label">Passphrase</div>
+        <input type="password" id="login-password" placeholder="words of power" autocomplete="current-password">
+      </div>
+      <button class="btn-primary" onclick="handleLogin()">OPEN THE TOME</button>
+    </div>
+
+    <div id="register-form" style="display:none">
+      <div class="input-group">
+        <div class="label">Email Address</div>
+        <input type="email" id="reg-email" placeholder="your@coven.com" autocomplete="email">
+      </div>
+      <div class="input-group">
+        <div class="label">Craft a Passphrase</div>
+        <input type="password" id="reg-password" placeholder="8+ chars, uppercase & symbol" autocomplete="new-password">
+      </div>
+      <div class="input-group">
+        <div class="label">Confirm Passphrase</div>
+        <input type="password" id="reg-confirm" placeholder="once more, with feeling" autocomplete="new-password">
+      </div>
+      <button class="btn-primary" onclick="handleRegister()">BEGIN THE RITE</button>
+    </div>
+
+    <div id="verify-form" style="display:none">
+      <div class="body-text" style="margin-bottom:var(--pad-md);text-align:center">
+        A verification code has been sent to your email.
+      </div>
+      <div class="input-group">
+        <div class="label">Verification Code</div>
+        <input type="text" id="verify-code" placeholder="6-digit code" autocomplete="one-time-code" inputmode="numeric">
+      </div>
+      <button class="btn-primary" onclick="handleVerify()">CONSECRATE THE SEAL</button>
+    </div>
+
+    <div id="login-status" class="status"></div>
+  </div>
+
+  <!-- ============================================================
+       DASHBOARD SCREEN
+       ============================================================ -->
+  <div id="screen-dashboard" class="screen">
+    <div class="top-bar">
+      <span class="wordmark">SKEIN</span>
+      <div id="sync-pill" class="sync-pill">SYNCED</div>
+      <button class="btn-ghost" style="font-size:9px;padding:4px 10px" onclick="navigateTo('settings')">⚙</button>
+    </div>
+
+    <div class="scroll-area" id="dashboard-scroll">
+      <!-- Moon phase banner -->
+      <div style="background:var(--surface1);border:1px solid var(--border);padding:var(--pad-md);margin-bottom:var(--pad-md);text-align:center">
+        <div id="moon-phase-glyph" style="font-family:var(--font-display);font-size:28px;color:var(--gold-bright);letter-spacing:0.2em"></div>
+        <div id="moon-phase-name" style="font-family:var(--font-display);font-size:9px;letter-spacing:0.2em;color:var(--text-faint);margin-top:4px"></div>
+        <div id="moon-date" style="font-family:var(--font-display);font-size:8px;letter-spacing:0.14em;color:var(--text-faint);margin-top:2px"></div>
+      </div>
+
+      <!-- Quick add -->
+      <div class="section-header">CREATE</div>
+      <div style="display:flex;gap:var(--pad-xs);flex-wrap:wrap;margin-bottom:var(--pad-lg)">
+        <button class="chip" onclick="newEntry('Spell')">S · SPELL</button>
+        <button class="chip" onclick="newEntry('Ritual')">R · RITUAL</button>
+        <button class="chip" onclick="newEntry('Journal Entry')">J · JOURNAL</button>
+        <button class="chip" onclick="newEntry('Herbal Correspondence')">H · HERBAL</button>
+        <button class="chip" onclick="newEntry('Sigil & Symbol')">Si · SIGIL</button>
+        <button class="chip" onclick="newEntry('Tarot Reading')">T · TAROT</button>
+        <button class="chip" onclick="newEntry('Astrological Event')">A · ASTRO</button>
+      </div>
+
+      <!-- Recent entries -->
+      <div class="section-header">RECENT</div>
+      <div id="recent-entries"></div>
+    </div>
+
+    <div class="bottom-nav">
+      <button class="nav-item active" onclick="navigateTo('dashboard')">
+        <span class="nav-icon">◈</span>
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-item" onclick="navigateTo('entries')">
+        <span class="nav-icon">≡</span>
+        <span class="nav-label">Grimoire</span>
+      </button>
+      <button class="nav-item" onclick="navigateTo('settings')">
+        <span class="nav-icon">◎</span>
+        <span class="nav-label">Profile</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       ENTRIES SCREEN
+       ============================================================ -->
+  <div id="screen-entries" class="screen">
+    <div class="top-bar">
+      <span class="wordmark">GRIMOIRE</span>
+    </div>
+
+    <div class="type-chips" id="filter-chips">
+      <button class="chip active" onclick="setFilter('All')">ALL</button>
+      <button class="chip" onclick="setFilter('Spell')">SPELLS</button>
+      <button class="chip" onclick="setFilter('Ritual')">RITUALS</button>
+      <button class="chip" onclick="setFilter('Journal Entry')">JOURNAL</button>
+      <button class="chip" onclick="setFilter('Herbal Correspondence')">HERBAL</button>
+      <button class="chip" onclick="setFilter('Sigil & Symbol')">SIGILS</button>
+      <button class="chip" onclick="setFilter('Tarot Reading')">TAROT</button>
+      <button class="chip" onclick="setFilter('Astrological Event')">ASTRO</button>
+    </div>
+
+    <div class="scroll-area" id="entries-list"></div>
+
+    <button class="fab" onclick="newEntry(null)">+</button>
+
+    <div class="bottom-nav">
+      <button class="nav-item" onclick="navigateTo('dashboard')">
+        <span class="nav-icon">◈</span>
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-item active" onclick="navigateTo('entries')">
+        <span class="nav-icon">≡</span>
+        <span class="nav-label">Grimoire</span>
+      </button>
+      <button class="nav-item" onclick="navigateTo('settings')">
+        <span class="nav-icon">◎</span>
+        <span class="nav-label">Profile</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       EDITOR SCREEN
+       ============================================================ -->
+  <div id="screen-editor" class="screen">
+    <div class="top-bar">
+      <button class="back-btn" onclick="navigateBack()">← BACK</button>
+      <span id="editor-title-bar" class="heading-section" style="flex:1;text-align:center">NEW ENTRY</span>
+      <div style="width:60px"></div>
+    </div>
+
+    <div class="editor-type-strip" id="editor-type-strip"></div>
+
+    <div class="scroll-area no-nav" id="editor-scroll">
+      <div class="input-group">
+        <div class="label">Title</div>
+        <input type="text" id="editor-title" placeholder="Name this working...">
+      </div>
+
+      <div id="editor-type-fields"></div>
+
+      <div class="input-group" style="margin-top:var(--pad-md)">
+        <div class="label">Tags (comma separated)</div>
+        <input type="text" id="editor-tags" placeholder="moon, protection, fire...">
+      </div>
+    </div>
+
+    <div id="editor-status" class="status" style="padding:4px var(--pad-md)"></div>
+
+    <div class="editor-actions">
+      <button class="btn-danger" id="editor-delete-btn" style="display:none" onclick="handleDelete()">DELETE</button>
+      <button class="btn-ghost" onclick="navigateBack()">CANCEL</button>
+      <button class="btn-primary editor-save" onclick="handleSave()">SAVE ENTRY</button>
+    </div>
+  </div>
+
+  <!-- ============================================================
+       SETTINGS SCREEN
+       ============================================================ -->
+  <div id="screen-settings" class="screen">
+    <div class="top-bar">
+      <span class="wordmark">PROFILE</span>
+    </div>
+
+    <div class="scroll-area">
+      <div class="section-header">ACCOUNT</div>
+      <div style="background:var(--surface1);border:1px solid var(--border);padding:var(--pad-md);margin-bottom:var(--pad-md)">
+        <div class="label">Logged in as</div>
+        <div id="settings-email" style="font-family:var(--font-display);font-size:12px;color:var(--text-primary);letter-spacing:0.08em"></div>
+        <div id="settings-entry-count" class="body-text" style="margin-top:var(--pad-sm);font-size:13px"></div>
+      </div>
+
+      <div class="section-header">SYNC</div>
+      <div style="margin-bottom:var(--pad-md);display:flex;flex-direction:column;gap:var(--pad-sm)">
+        <button class="btn-ghost" onclick="triggerSync()">SYNC NOW</button>
+        <button class="btn-ghost" onclick="triggerFullSync()">RESTORE FROM CLOUD</button>
+      </div>
+      <div id="sync-status-text" class="status"></div>
+
+      <div class="section-header" style="margin-top:var(--pad-lg)">APP</div>
+      <div style="background:var(--surface1);border:1px solid var(--border);padding:var(--pad-md);margin-bottom:var(--pad-xl)">
+        <div class="label">Version</div>
+        <div style="font-family:var(--font-display);font-size:11px;color:var(--text-muted);letter-spacing:0.1em">0.1.0-beta · PWA</div>
+      </div>
+
+      <div id="pro-banner" style="display:none;background:var(--surface1);border:1px solid var(--border-gold);padding:var(--pad-md);margin-bottom:var(--pad-md);text-align:center">
+        <div style="font-family:var(--font-display);font-size:9px;letter-spacing:0.16em;color:var(--gold-bright)">◈ SKEIN PRO — ACTIVE ◈</div>
+      </div>
+      <div id="free-upgrade-banner" style="margin-bottom:var(--pad-md)">
+        <button class="btn-ghost" style="width:100%;border-color:var(--gold-bright);color:var(--gold-bright)" onclick="showProScreen()">UPGRADE TO SKEIN PRO</button>
+      </div>
+      <button class="btn-danger" style="width:100%" onclick="handleSignOut()">SIGN OUT</button>
+    </div>
+
+    <div class="bottom-nav">
+      <button class="nav-item" onclick="navigateTo('dashboard')">
+        <span class="nav-icon">◈</span>
+        <span class="nav-label">Home</span>
+      </button>
+      <button class="nav-item" onclick="navigateTo('entries')">
+        <span class="nav-icon">≡</span>
+        <span class="nav-label">Grimoire</span>
+      </button>
+      <button class="nav-item active" onclick="navigateTo('settings')">
+        <span class="nav-icon">◎</span>
+        <span class="nav-label">Profile</span>
+      </button>
+    </div>
+  </div>
+
+
+  <!-- ============================================================
+       PRO / LICENSE SCREEN
+       ============================================================ -->
+  <div id="screen-pro" class="screen">
+    <div class="top-bar">
+      <button class="back-btn" onclick="navigateBack()">← BACK</button>
+      <span class="wordmark" style="flex:1;text-align:center">SKEIN PRO</span>
+      <div style="width:60px"></div>
+    </div>
+
+    <div class="scroll-area no-nav">
+      <div style="text-align:center;padding:var(--pad-xl) 0 var(--pad-lg)">
+        <div style="font-family:var(--font-display);font-size:32px;color:var(--gold-bright);letter-spacing:0.2em;margin-bottom:var(--pad-sm)">◈</div>
+        <div class="heading-display" style="margin-bottom:var(--pad-sm)">UNLOCK THE FULL GRIMOIRE</div>
+        <div class="body-text" style="max-width:320px;margin:0 auto">
+          A single purchase unlocks Skein forever — across all your devices.
+        </div>
+      </div>
+
+      <div style="background:var(--surface1);border:1px solid var(--border-gold);padding:var(--pad-lg);margin-bottom:var(--pad-lg)">
+        <div style="display:flex;flex-direction:column;gap:var(--pad-sm);margin-bottom:var(--pad-lg)">
+          <div style="display:flex;gap:var(--pad-sm);align-items:center">
+            <span style="color:var(--gold-bright);font-family:var(--font-display)">◈</span>
+            <span class="body-text">Unlimited grimoire entries</span>
+          </div>
+          <div style="display:flex;gap:var(--pad-sm);align-items:center">
+            <span style="color:var(--gold-bright);font-family:var(--font-display)">◈</span>
+            <span class="body-text">Cloud sync across all devices</span>
+          </div>
+          <div style="display:flex;gap:var(--pad-sm);align-items:center">
+            <span style="color:var(--gold-bright);font-family:var(--font-display)">◈</span>
+            <span class="body-text">Desktop + Android + iOS (PWA)</span>
+          </div>
+          <div style="display:flex;gap:var(--pad-sm);align-items:center">
+            <span style="color:var(--gold-bright);font-family:var(--font-display)">◈</span>
+            <span class="body-text">All future updates included</span>
+          </div>
+        </div>
+        <!-- Lemon Squeezy checkout button — replace data-store and data-product with your LS values -->
+        <a
+          class="btn-primary"
+          style="display:block;text-align:center;text-decoration:none;cursor:pointer"
+          href="https://skein.lemonsqueezy.com/checkout"
+          target="_blank"
+          id="ls-checkout-btn"
+        >PURCHASE SKEIN PRO</a>
+      </div>
+
+      <div style="background:var(--surface1);border:1px solid var(--border);padding:var(--pad-md);margin-bottom:var(--pad-md)">
+        <div class="section-header" style="margin-bottom:var(--pad-md)">ALREADY PURCHASED?</div>
+        <div class="input-group">
+          <div class="label">License Key</div>
+          <input type="text" id="license-key-input" placeholder="SKEIN-XXXX-XXXX-XXXX" autocomplete="off">
+        </div>
+        <button class="btn-ghost" style="width:100%" onclick="activateLicense()">ACTIVATE LICENSE</button>
+        <div id="license-status" class="status"></div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- #app -->
+
+<script is:inline>
+// ============================================================
+//  CONFIG
+// ============================================================
+const CONFIG = {
+  cognitoRegion:  'us-east-1',
+  userPoolId:     'us-east-1_JfJbA8Guu',
+  clientId:       '5pactktdabhtd5rh2gu70jfdj6',
+  apiEndpoint:    'https://yjgpdnscte.execute-api.us-east-1.amazonaws.com/prod/grimoire',
+};
+
+const COGNITO_URL = `https://cognito-idp.${CONFIG.cognitoRegion}.amazonaws.com/`;
+
+// ============================================================
+//  STATE
+// ============================================================
+let state = {
+  tokens:       null,   // { AccessToken, IdToken, RefreshToken }
+  userEmail:    '',
+  userSub:      '',
+  entries:      [],
+  currentFilter:'All',
+  editingEntry: null,   // null = new entry
+  editingType:  'Journal Entry',
+  confirmDelete:false,
+  prevScreen:   'dashboard',
+  isPro:        false,
+};
+
+// ============================================================
+//  STORAGE
+// ============================================================
+const Storage = {
+  save(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); } catch(e) {} },
+  load(key)      { try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : null; } catch(e) { return null; } },
+  remove(key)    { try { localStorage.removeItem(key); } catch(e) {} },
+};
+
+// ============================================================
+//  COGNITO AUTH
+// ============================================================
+async function cognitoRequest(body) {
+  const { __type, ...payload } = body;  // strip __type from body, use as header only
+  const res = await fetch(COGNITO_URL, {
+    method:  'POST',
+    headers: {
+      'Content-Type': 'application/x-amz-json-1.1',
+      'X-Amz-Target': __type,
+    },
+    body: JSON.stringify(payload),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.message || data.__type || 'Auth error');
+  return data;
+}
+
+async function login(email, password) {
+  const data = await cognitoRequest({
+    __type:     'AWSCognitoIdentityProviderService.InitiateAuth',
+    AuthFlow:   'USER_PASSWORD_AUTH',
+    ClientId:   CONFIG.clientId,
+    AuthParameters: { USERNAME: email, PASSWORD: password },
+  });
+  return data.AuthenticationResult;
+}
+
+async function register(email, password) {
+  await cognitoRequest({
+    __type:   'AWSCognitoIdentityProviderService.SignUp',
+    ClientId: CONFIG.clientId,
+    Username: email,
+    Password: password,
+    UserAttributes: [{ Name: 'email', Value: email }],
+  });
+}
+
+async function confirmSignUp(email, code) {
+  await cognitoRequest({
+    __type:           'AWSCognitoIdentityProviderService.ConfirmSignUp',
+    ClientId:         CONFIG.clientId,
+    Username:         email,
+    ConfirmationCode: code,
+  });
+}
+
+async function refreshTokens() {
+  if (!state.tokens?.RefreshToken) return false;
+  try {
+    const data = await cognitoRequest({
+      __type:   'AWSCognitoIdentityProviderService.InitiateAuth',
+      AuthFlow: 'REFRESH_TOKEN_AUTH',
+      ClientId: CONFIG.clientId,
+      AuthParameters: { REFRESH_TOKEN: state.tokens.RefreshToken },
+    });
+    state.tokens.AccessToken = data.AuthenticationResult.AccessToken;
+    state.tokens.IdToken     = data.AuthenticationResult.IdToken;
+    Storage.save('tokens', state.tokens);
+    return true;
+  } catch(e) {
+    console.error('Token refresh failed:', e);
+    return false;
+  }
+}
+
+function parseJwt(token) {
+  try {
+    const base64 = token.split('.')[1].replace(/-/g, '+').replace(/_/g, '/');
+    return JSON.parse(atob(base64));
+  } catch(e) { return {}; }
+}
+
+// ============================================================
+//  API
+// ============================================================
+async function apiCall(action, body) {
+  // Refresh token if expired
+  const claims = parseJwt(state.tokens?.AccessToken || '');
+  if (claims.exp && claims.exp < Date.now() / 1000 + 60) {
+    await refreshTokens();
+  }
+
+  const res = await fetch(CONFIG.apiEndpoint, {
+    method:  'POST',
+    headers: {
+      'Content-Type':  'application/json',
+      'Authorization': state.tokens?.AccessToken || '',
+    },
+    body: JSON.stringify({ action, userID: state.userSub, body }),
+  });
+  const data = await res.json();
+  if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
+  return data;
+}
+
+// ============================================================
+//  ENTRY HELPERS
+// ============================================================
+function genUUID() {
+  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
+    const r = Math.random() * 16 | 0;
+    return (c === 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+  });
+}
+
+const TYPE_COLORS = {
+  'Spell':                    '#8b1a1a',
+  'Ritual':                   '#1a3a5c',
+  'Journal Entry':            '#4a8fbd',
+  'Herbal Correspondence':    '#2d6b3a',
+  'Sigil & Symbol':           '#6b4a8b',
+  'Tarot Reading':            '#7b3a7b',
+  'Astrological Event':       '#1a2a6b',
+};
+
+const TYPE_FIELDS = {
+  'Spell': [
+    { key: 'intent',       label: 'Intent / Purpose',    type: 'text' },
+    { key: 'ingredients',  label: 'Ingredients',          type: 'textarea' },
+    { key: 'instructions', label: 'Instructions',         type: 'textarea' },
+    { key: 'moonPhase',    label: 'Best Moon Phase',      type: 'text' },
+    { key: 'outcome',      label: 'Outcome / Results',    type: 'textarea' },
+  ],
+  'Ritual': [
+    { key: 'purpose',      label: 'Purpose',              type: 'text' },
+    { key: 'tools',        label: 'Tools & Materials',    type: 'textarea' },
+    { key: 'steps',        label: 'Steps',                type: 'textarea' },
+    { key: 'outcome',      label: 'Outcome',              type: 'textarea' },
+  ],
+  'Journal Entry': [
+    { key: 'date',         label: 'Date (YYYY-MM-DD)',    type: 'text' },
+    { key: 'moonPhase',    label: 'Moon Phase',           type: 'text' },
+    { key: 'mood',         label: 'Mood / Energy',        type: 'text' },
+    { key: 'body',         label: 'Body',                 type: 'textarea', large: true },
+    { key: 'reflections',  label: 'Reflections',          type: 'textarea' },
+  ],
+  'Herbal Correspondence': [
+    { key: 'plantName',    label: 'Plant Name',           type: 'text' },
+    { key: 'properties',   label: 'Magical Properties',   type: 'textarea' },
+    { key: 'uses',         label: 'Uses & Applications',  type: 'textarea' },
+    { key: 'cautions',     label: 'Cautions',             type: 'text' },
+  ],
+  'Sigil & Symbol': [
+    { key: 'intention',    label: 'Intention',            type: 'text' },
+    { key: 'method',       label: 'Creation Method',      type: 'text' },
+    { key: 'activation',   label: 'Activation Method',    type: 'textarea' },
+    { key: 'moonPhase',    label: 'Moon Phase Created',   type: 'text' },
+    { key: 'outcome',      label: 'Outcome',              type: 'textarea' },
+  ],
+  'Tarot Reading': [
+    { key: 'question',     label: 'Question / Focus',     type: 'text' },
+    { key: 'spread',       label: 'Spread Used',          type: 'text' },
+    { key: 'cards',        label: 'Cards Drawn',          type: 'textarea' },
+    { key: 'interpretation', label: 'Interpretation',     type: 'textarea', large: true },
+    { key: 'outcome',      label: 'Outcome',              type: 'textarea' },
+  ],
+  'Astrological Event': [
+    { key: 'eventDate',    label: 'Event Date',           type: 'text' },
+    { key: 'eventType',    label: 'Event Type',           type: 'text' },
+    { key: 'significance', label: 'Significance',         type: 'textarea' },
+    { key: 'personalImpact', label: 'Personal Impact',   type: 'textarea' },
+  ],
+};
+
+// ============================================================
+//  MOON PHASE
+// ============================================================
+function getMoonPhase() {
+  const now  = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1;
+  const day  = now.getDate();
+  // Simple Julian date calculation
+  const jd = 367 * year - Math.floor(7 * (year + Math.floor((month + 9) / 12)) / 4)
+    + Math.floor(275 * month / 9) + day + 1721013.5;
+  const cycle = (jd - 2451549.5) / 29.53058853;
+  const phase = (cycle - Math.floor(cycle)) * 29.53;
+
+  if (phase < 1.85)  return { name: 'New Moon',        glyph: '-O-' };
+  if (phase < 7.38)  return { name: 'Waxing Crescent', glyph: ')O'  };
+  if (phase < 9.22)  return { name: 'First Quarter',   glyph: 'D'   };
+  if (phase < 14.77) return { name: 'Waxing Gibbous',  glyph: 'oD'  };
+  if (phase < 16.61) return { name: 'Full Moon',        glyph: '-@-' };
+  if (phase < 22.15) return { name: 'Waning Gibbous',  glyph: 'Co'  };
+  if (phase < 23.99) return { name: 'Last Quarter',    glyph: 'C'   };
+  return                     { name: 'Waning Crescent', glyph: 'Co'  };
+}
+
+// ============================================================
+//  NAVIGATION
+// ============================================================
+let screenHistory = ['dashboard'];
+
+function navigateTo(screenName) {
+  // Update bottom nav active states
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll(`.nav-item`).forEach(b => {
+    if (b.textContent.toLowerCase().includes(screenName.substring(0, 4).toLowerCase()))
+      b.classList.add('active');
+  });
+
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById(`screen-${screenName}`)?.classList.add('active');
+  if (screenName === 'pro') { /* no lifecycle needed */ }
+
+  // Lifecycle hooks
+  if (screenName === 'dashboard') onDashboardActivated();
+  if (screenName === 'entries')   onEntriesActivated();
+  if (screenName === 'settings')  onSettingsActivated();
+
+  screenHistory.push(screenName);
+}
+
+function navigateBack() {
+  if (screenHistory.length > 1) {
+    screenHistory.pop();
+    const prev = screenHistory[screenHistory.length - 1];
+    navigateTo(prev);
+  }
+}
+
+// ============================================================
+//  SCREEN LIFECYCLE
+// ============================================================
+function onDashboardActivated() {
+  const moon = getMoonPhase();
+  document.getElementById('moon-phase-glyph').textContent = moon.glyph;
+  document.getElementById('moon-phase-name').textContent  = moon.name.toUpperCase();
+  const now = new Date();
+  const days = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY'];
+  document.getElementById('moon-date').textContent =
+    `${days[now.getDay()]} · ${now.toLocaleDateString('en-US', {month:'long',day:'numeric',year:'numeric'}).toUpperCase()}`;
+
+  renderRecentEntries();
+}
+
+function onEntriesActivated() {
+  renderEntriesList();
+}
+
+function onSettingsActivated() {
+  const proBanner     = document.getElementById('pro-banner');
+  const upgradeBanner = document.getElementById('free-upgrade-banner');
+  if (proBanner)     proBanner.style.display     = state.isPro ? '' : 'none';
+  if (upgradeBanner) upgradeBanner.style.display  = state.isPro ? 'none' : '';
+  document.getElementById('settings-email').textContent =
+    state.userEmail || state.userSub?.substring(0, 16) + '...';
+  document.getElementById('settings-entry-count').textContent =
+    `${state.entries.length} entr${state.entries.length === 1 ? 'y' : 'ies'} in your grimoire`;
+}
+
+// ============================================================
+//  LOGIN FLOW
+// ============================================================
+let loginTab    = 'enter';
+let pendingEmail = '';
+
+function showLoginTab(tab) {
+  loginTab = tab;
+  document.querySelectorAll('.login-tab').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.login-tab').forEach(b => {
+    if ((tab === 'enter' && b.textContent === 'ENTER') ||
+        (tab === 'initiate' && b.textContent === 'INITIATE'))
+      b.classList.add('active');
+  });
+  document.getElementById('login-form').style.display    = tab === 'enter'    ? '' : 'none';
+  document.getElementById('register-form').style.display = tab === 'initiate' ? '' : 'none';
+  document.getElementById('verify-form').style.display   = 'none';
+  setLoginStatus('', '');
+}
+
+function setLoginStatus(msg, type) {
+  const el = document.getElementById('login-status');
+  el.textContent = msg;
+  el.className = `status ${type}`;
+}
+
+async function handleLogin() {
+  const email    = document.getElementById('login-email').value.trim();
+  const password = document.getElementById('login-password').value;
+  if (!email || !password) return setLoginStatus('Please fill in all fields.', 'error');
+
+  setLoginStatus('Opening the tome...', 'info');
+  try {
+    const tokens = await login(email, password);
+    onLoginSuccess(tokens, email);
+  } catch(e) {
+    const msg = e.message.includes('NotAuthorizedException') || e.message.includes('Incorrect')
+      ? 'Incorrect email or passphrase.'
+      : e.message.includes('UserNotFoundException')
+      ? 'No account found with that email.'
+      : e.message;
+    setLoginStatus(msg, 'error');
+  }
+}
+
+async function handleRegister() {
+  const email   = document.getElementById('reg-email').value.trim();
+  const pass    = document.getElementById('reg-password').value;
+  const confirm = document.getElementById('reg-confirm').value;
+  if (!email || !pass || !confirm) return setLoginStatus('Please fill in all fields.', 'error');
+  if (pass !== confirm) return setLoginStatus('Passphrases do not match.', 'error');
+  if (pass.length < 8)  return setLoginStatus('Passphrase must be at least 8 characters.', 'error');
+
+  setLoginStatus('Beginning the rite...', 'info');
+  try {
+    pendingEmail = email;
+    await register(email, pass);
+    document.getElementById('register-form').style.display = 'none';
+    document.getElementById('verify-form').style.display   = '';
+    setLoginStatus('Check your email for a verification code.', 'success');
+  } catch(e) {
+    setLoginStatus(e.message.includes('UsernameExistsException')
+      ? 'An account with this email already exists.'
+      : e.message, 'error');
+  }
+}
+
+async function handleVerify() {
+  const code = document.getElementById('verify-code').value.trim();
+  if (!code) return setLoginStatus('Enter the verification code.', 'error');
+
+  setLoginStatus('Consecrating the seal...', 'info');
+  try {
+    await confirmSignUp(pendingEmail, code);
+    setLoginStatus('Initiation complete. You may now enter.', 'success');
+    document.getElementById('verify-form').style.display   = 'none';
+    document.getElementById('login-form').style.display    = '';
+    showLoginTab('enter');
+    document.getElementById('login-email').value = pendingEmail;
+  } catch(e) {
+    setLoginStatus(e.message, 'error');
+  }
+}
+
+function onLoginSuccess(tokens, email) {
+  state.tokens    = tokens;
+  state.userEmail = email;
+  const claims    = parseJwt(tokens.IdToken || tokens.AccessToken);
+  state.userSub   = claims.sub || '';
+  Storage.save('tokens', tokens);
+  Storage.save('userEmail', email);
+  Storage.save('userSub', state.userSub);
+
+  setLoginStatus('', '');
+  checkLicenseStatus();
+  navigateTo('dashboard');
+  loadEntriesFromCloud();
+}
+
+function handleSignOut() {
+  state.tokens    = null;
+  state.userEmail = '';
+  state.userSub   = '';
+  state.entries   = [];
+  Storage.remove('tokens');
+  Storage.remove('userEmail');
+  Storage.remove('userSub');
+  Storage.remove('entries');
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.getElementById('screen-login').classList.add('active');
+  showLoginTab('enter');
+}
+
+// ============================================================
+//  ENTRY RENDERING
+// ============================================================
+function renderEntryCard(entry, container) {
+  const card = document.createElement('div');
+  card.className = 'entry-card';
+  card.onclick = () => openEditor(entry);
+
+  const pip = document.createElement('div');
+  pip.className = 'type-pip';
+  pip.style.background = TYPE_COLORS[entry.EntryType] || TYPE_COLORS[entry.entryType] || '#444';
+
+  const content = document.createElement('div');
+  content.className = 'card-content';
+
+  const title = document.createElement('div');
+  title.className = 'card-title';
+  title.textContent = entry.Title || entry.title || 'Untitled';
+
+  const meta = document.createElement('div');
+  meta.className = 'card-meta';
+  const type = entry.EntryType || entry.entryType || '';
+  const date = (entry.UpdatedAt || entry.updatedAt || '').substring(0, 10);
+  meta.textContent = `${type.toUpperCase()} · ${date}`;
+
+  content.appendChild(title);
+  content.appendChild(meta);
+  card.appendChild(pip);
+  card.appendChild(content);
+  container.appendChild(card);
+}
+
+function renderRecentEntries() {
+  const container = document.getElementById('recent-entries');
+  container.innerHTML = '';
+  const recent = [...state.entries]
+    .sort((a, b) => (b.UpdatedAt || b.updatedAt || '').localeCompare(a.UpdatedAt || a.updatedAt || ''))
+    .slice(0, 5);
+
+  if (recent.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-glyph">-O-</div>
+        <div class="body-text">Your grimoire awaits its first entry.</div>
+      </div>`;
+    return;
+  }
+  recent.forEach(e => renderEntryCard(e, container));
+}
+
+function renderEntriesList() {
+  const container = document.getElementById('entries-list');
+  container.innerHTML = '';
+
+  let filtered = state.entries.filter(e => !e.IsDeleted && !e.isDeleted);
+  if (state.currentFilter !== 'All') {
+    filtered = filtered.filter(e =>
+      (e.EntryType || e.entryType) === state.currentFilter);
+  }
+  filtered.sort((a, b) =>
+    (b.UpdatedAt || b.updatedAt || '').localeCompare(a.UpdatedAt || a.updatedAt || ''));
+
+  if (filtered.length === 0) {
+    container.innerHTML = `
+      <div class="empty-state">
+        <div class="empty-glyph">◈</div>
+        <div class="body-text">No entries here yet.<br>Tap + to begin.</div>
+      </div>`;
+    return;
+  }
+  filtered.forEach(e => renderEntryCard(e, container));
+}
+
+function setFilter(type) {
+  state.currentFilter = type;
+  document.querySelectorAll('#filter-chips .chip').forEach(c => {
+    c.classList.toggle('active',
+      c.textContent.trim() === type.toUpperCase() ||
+      c.textContent.trim() === 'ALL' && type === 'All');
+  });
+  renderEntriesList();
+}
+
+// ============================================================
+//  EDITOR
+// ============================================================
+function buildTypeStrip(selectedType) {
+  const strip = document.getElementById('editor-type-strip');
+  strip.innerHTML = '';
+  Object.keys(TYPE_FIELDS).forEach(type => {
+    const chip = document.createElement('button');
+    chip.className = 'type-chip' + (type === selectedType ? ' selected' : '');
+    chip.style.borderColor = type === selectedType ? TYPE_COLORS[type] : '';
+    chip.style.color       = type === selectedType ? '#fff' : '';
+    chip.textContent       = type.toUpperCase();
+    chip.onclick = () => {
+      state.editingType = type;
+      buildTypeStrip(type);
+      buildTypeFields(type, {});
+    };
+    strip.appendChild(chip);
+  });
+}
+
+function buildTypeFields(type, data) {
+  const container = document.getElementById('editor-type-fields');
+  container.innerHTML = '';
+
+  const fields = TYPE_FIELDS[type] || [];
+  fields.forEach(field => {
+    const group = document.createElement('div');
+    group.className = 'input-group';
+    group.innerHTML = `<div class="label">${field.label}</div>`;
+
+    if (field.type === 'textarea') {
+      const ta = document.createElement('textarea');
+      ta.id          = `field-${field.key}`;
+      ta.placeholder = field.label + '...';
+      ta.value       = data[field.key] || '';
+      if (field.large) ta.style.minHeight = '160px';
+      group.appendChild(ta);
+    } else {
+      const input = document.createElement('input');
+      input.type        = 'text';
+      input.id          = `field-${field.key}`;
+      input.placeholder = field.label + '...';
+      input.value       = data[field.key] || '';
+      group.appendChild(input);
+    }
+    container.appendChild(group);
+  });
+}
+
+function newEntry(type) {
+  state.editingEntry = null;
+  state.editingType  = type || 'Journal Entry';
+  state.confirmDelete = false;
+
+  document.getElementById('editor-title').value = '';
+  document.getElementById('editor-tags').value  = '';
+  document.getElementById('editor-title-bar').textContent = 'NEW ENTRY';
+  document.getElementById('editor-delete-btn').style.display = 'none';
+  document.getElementById('editor-status').textContent = '';
+  document.getElementById('editor-status').className   = 'status';
+
+  buildTypeStrip(state.editingType);
+  buildTypeFields(state.editingType, {});
+  document.getElementById('editor-scroll').scrollTop = 0;
+  navigateTo('editor');
+}
+
+function openEditor(entry) {
+  state.editingEntry  = entry;
+  state.editingType   = entry.EntryType || entry.entryType || 'Journal Entry';
+  state.confirmDelete = false;
+
+  document.getElementById('editor-title').value =
+    entry.Title || entry.title || '';
+  document.getElementById('editor-tags').value  =
+    (entry.Tags || entry.tags || []).join(', ');
+  document.getElementById('editor-title-bar').textContent = 'EDIT ENTRY';
+  document.getElementById('editor-delete-btn').style.display = '';
+  document.getElementById('editor-delete-btn').textContent   = 'DELETE';
+  document.getElementById('editor-status').textContent = '';
+  document.getElementById('editor-status').className   = 'status';
+
+  // Load template data
+  const td = entry.TemplateData || entry.templateData || {};
+  buildTypeStrip(state.editingType);
+  buildTypeFields(state.editingType, td);
+  document.getElementById('editor-scroll').scrollTop = 0;
+  navigateTo('editor');
+}
+
+function getFieldValues() {
+  const fields = TYPE_FIELDS[state.editingType] || [];
+  const data = {};
+  fields.forEach(f => {
+    const el = document.getElementById(`field-${f.key}`);
+    if (el) data[f.key] = el.value.trim();
+  });
+  return data;
+}
+
+function setEditorStatus(msg, type) {
+  const el = document.getElementById('editor-status');
+  el.textContent = msg;
+  el.className   = `status ${type}`;
+}
+
+async function handleSave() {
+  const title = document.getElementById('editor-title').value.trim();
+  if (!title) return setEditorStatus('Title required to save.', 'error');
+
+  const tagsRaw = document.getElementById('editor-tags').value.trim();
+  const tags    = tagsRaw ? tagsRaw.split(',').map(t => t.trim()).filter(Boolean) : [];
+  const now     = new Date().toISOString();
+
+  const isNew   = !state.editingEntry;
+  const entry   = {
+    entityID:     isNew ? genUUID() : (state.editingEntry.EntityID || state.editingEntry.entityID),
+    title,
+    entryType:    state.editingType,
+    tags,
+    visibility:   'Private',
+    collectionID: '',
+    isPinned:     false,
+    isFavourite:  false,
+    isDeleted:    false,
+    templateData: getFieldValues(),
+    createdAt:    isNew ? now : (state.editingEntry.CreatedAt || state.editingEntry.createdAt || now),
+    updatedAt:    now,
+    version:      isNew ? 0 : (state.editingEntry.Version || state.editingEntry.version || 0),
+  };
+
+  setEditorStatus('Saving...', 'info');
+  try {
+    const result = await apiCall('entry:save', entry);
+    // Update local state
+    const clientEntry = {
+      EntityID:     entry.entityID,
+      OwnerUserID:  state.userSub,
+      Title:        entry.title,
+      EntryType:    entry.entryType,
+      Tags:         entry.tags,
+      Visibility:   entry.visibility,
+      CollectionID: entry.collectionID,
+      IsPinned:     entry.isPinned,
+      IsFavourite:  entry.isFavourite,
+      IsDeleted:    false,
+      TemplateData: entry.templateData,
+      CreatedAt:    entry.createdAt,
+      UpdatedAt:    entry.updatedAt,
+      Version:      result.version || entry.version + 1,
+    };
+
+    const idx = state.entries.findIndex(e =>
+      (e.EntityID || e.entityID) === entry.entityID);
+    if (idx >= 0) state.entries[idx] = clientEntry;
+    else          state.entries.push(clientEntry);
+
+    Storage.save('entries', state.entries);
+    setSyncPill('synced');
+    setEditorStatus('Saved.', 'success');
+    setTimeout(() => navigateBack(), 600);
+  } catch(e) {
+    setEditorStatus('Save failed: ' + e.message, 'error');
+    setSyncPill('failed');
+  }
+}
+
+async function handleDelete() {
+  if (!state.editingEntry) return;
+  const deleteBtn = document.getElementById('editor-delete-btn');
+
+  if (!state.confirmDelete) {
+    state.confirmDelete = true;
+    deleteBtn.textContent = 'CONFIRM?';
+    setEditorStatus('Tap DELETE again to confirm.', 'info');
+    return;
+  }
+
+  const entityID = state.editingEntry.EntityID || state.editingEntry.entityID;
+  setEditorStatus('Deleting...', 'info');
+  try {
+    await apiCall('entry:delete', { entityID });
+    state.entries = state.entries.filter(e =>
+      (e.EntityID || e.entityID) !== entityID);
+    Storage.save('entries', state.entries);
+    navigateBack();
+  } catch(e) {
+    setEditorStatus('Delete failed: ' + e.message, 'error');
+  }
+}
+
+// ============================================================
+//  SYNC
+// ============================================================
+function setSyncPill(status) {
+  const pill = document.getElementById('sync-pill');
+  if (!pill) return;
+  pill.className   = `sync-pill ${status}`;
+  pill.textContent = status.toUpperCase();
+}
+
+async function loadEntriesFromCloud() {
+  // Load from local cache first for instant display
+  const cached = Storage.load('entries');
+  if (cached) {
+    state.entries = cached;
+    renderRecentEntries();
+  }
+
+  // Then sync from cloud
+  setSyncPill('pending');
+  try {
+    const result = await apiCall('entry:list', {});
+    state.entries = result.entries || [];
+    Storage.save('entries', state.entries);
+    setSyncPill('synced');
+    renderRecentEntries();
+    renderEntriesList();
+  } catch(e) {
+    console.error('Cloud sync failed:', e);
+    setSyncPill('failed');
+  }
+}
+
+async function triggerSync() {
+  const statusEl = document.getElementById('sync-status-text');
+  statusEl.textContent = 'Syncing...';
+  statusEl.className   = 'status info';
+  setSyncPill('pending');
+  try {
+    const result = await apiCall('entry:list', {});
+    state.entries = result.entries || [];
+    Storage.save('entries', state.entries);
+    setSyncPill('synced');
+    onSettingsActivated();
+    statusEl.textContent = `Synced ${state.entries.length} entries.`;
+    statusEl.className   = 'status success';
+  } catch(e) {
+    setSyncPill('failed');
+    statusEl.textContent = 'Sync failed: ' + e.message;
+    statusEl.className   = 'status error';
+  }
+}
+
+async function triggerFullSync() {
+  await triggerSync();
+}
+
+
+// ============================================================
+//  PRO / LICENSE
+// ============================================================
+async function checkLicenseStatus() {
+  if (!state.userSub) return;
+  try {
+    const result = await apiCall('license:status', {});
+    state.isPro = result.isPro || false;
+    if (state.isPro) Storage.save('isPro', true);
+  } catch(e) {
+    // Fail open — don't block users for a license check failure
+    const cached = Storage.load('isPro');
+    state.isPro = cached || false;
+  }
+}
+
+async function activateLicense() {
+  const key = document.getElementById('license-key-input').value.trim();
+  if (!key) {
+    setLicenseStatus('Enter your license key.', 'error');
+    return;
+  }
+  setLicenseStatus('Validating...', 'info');
+  try {
+    const result = await apiCall('license:validate', { licenseKey: key });
+    if (result.isPro) {
+      state.isPro = true;
+      Storage.save('isPro', true);
+      setLicenseStatus('License activated! Welcome to Skein Pro.', 'success');
+      setTimeout(() => navigateBack(), 1500);
+    } else {
+      setLicenseStatus(result.message || 'Invalid or expired license key.', 'error');
+    }
+  } catch(e) {
+    setLicenseStatus('Validation failed: ' + e.message, 'error');
+  }
+}
+
+function setLicenseStatus(msg, type) {
+  const el = document.getElementById('license-status');
+  if (!el) return;
+  el.textContent = msg;
+  el.className   = `status ${type}`;
+}
+
+function showProScreen() {
+  navigateTo('pro');
+}
+
+// ============================================================
+//  AUTO-LOGIN ON LAUNCH
+// ============================================================
+async function init() {
+  const tokens    = Storage.load('tokens');
+  const userEmail = Storage.load('userEmail');
+  const userSub   = Storage.load('userSub');
+  const entries   = Storage.load('entries');
+
+  if (tokens && userSub) {
+    state.tokens    = tokens;
+    state.userEmail = userEmail || '';
+    state.userSub   = userSub;
+    state.entries   = entries || [];
+
+    // Try to refresh tokens to verify session is still valid
+    const valid = await refreshTokens().catch(() => false);
+    if (valid || tokens.AccessToken) {
+      navigateTo('dashboard');
+      loadEntriesFromCloud();
+      return;
+    }
+  }
+
+  // Show login
+  document.getElementById('screen-login').classList.add('active');
+}
+
+// Register service worker for offline/install support
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js').catch(() => {});
+  });
+}
+
+window.addEventListener('load', init);
+</script>
+</body>
+</html>
