@@ -1,0 +1,26 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+    .text-glow {
+        text-shadow: 0 0 15px rgba(56, 189, 248, 0.3);
+        animation: pulse-glow 4s ease-in-out infinite;
+    }
+
+    @keyframes pulse-glow {
+        0%, 100% {
+            text-shadow: 0 0 15px rgba(56, 189, 248, 0.2);
+            opacity: 0.9;
+        }
+
+        50% {
+            text-shadow: 0 0 30px rgba(56, 189, 248, 0.5);
+            opacity: 1;
+        }
+    }
+
+    .bg-vignette {
+        background: radial-gradient(circle at center, #0f172a 0%, #020617 100%);
+    }
+}

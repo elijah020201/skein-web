@@ -1,11 +1,96 @@
 ---
-import Welcome from '../components/Welcome.astro';
-import Layout from '../layouts/Layout.astro';
-
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+import { Image } from 'astro:assets';
+import '../styles/global.css';
 ---
 
-<Layout>
-	<Welcome />
-</Layout>
+<html lang="en">
+	<head>
+		<meta charset="utf-8" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<meta name="viewport" content="width=device-width" />
+		<title>Skein | The Digital Sanctuary</title>
+	</head>
+	<body class="bg-vignette text-silver font-sans min-h-screen flex flex-col items-center justify-center p-6 selection:bg-electric selection:text-void">
+		
+		<main class="max-w-4xl w-full text-center space-y-12">
+			<section class="flex flex-col items-center space-y-2">
+				<div class="relative group">
+					<div class="absolute inset-0 bg-electric/10 blur-[100px] rounded-full scale-110"></div>
+					<Image 
+						src="/logo.png" 
+						alt="Skein Logo" 
+						width={220} 
+						height={220} 
+						class="relative z-10 text-glow drop-shadow-[0_0_30px_rgba(56,189,248,0.3)]" 
+					/>
+				</div>
+				<h1 class="text-5xl md:text-7xl font-bold tracking-[0.4em] uppercase text-silver pt-6">Skein</h1>
+				<p class="text-lg md:text-xl font-light tracking-[0.15em] text-ghost max-w-lg mx-auto pt-2">
+					A sovereign sanctuary for the modern seeker, woven securely into the cloud.
+				</p>
+			</section>
+
+			<section class="flex flex-col sm:flex-row gap-6 justify-center items-center">
+				<a href="https://discord.gg/bBKz4fBKUK" target="_blank" rel="noopener noreferrer" class="group relative px-10 py-4 overflow-hidden rounded-full bg-silver text-void font-bold tracking-[0.2em] transition-all hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
+					<span class="relative z-10 uppercase text-sm">Join the Coven</span>
+					<div class="absolute inset-0 bg-electric/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
+				</a>
+				<a href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAAah_UNpUMlZDV09DWklGVU1WMlpMQ09FTlhOWTAyTy4u" target="_blank" rel="noopener noreferrer" class="px-10 py-4 border border-silver/20 rounded-full text-silver font-bold tracking-[0.2em] uppercase text-sm hover:bg-silver/5 transition-all hover:border-electric/50">
+					Inner Circle Waitlist
+				</a>
+			</section>
+
+			<section class="grid grid-cols-1 md:grid-cols-3 gap-12 pt-16 border-t border-silver/5 text-center">
+				<div class="space-y-3 px-4">
+					<h3 class="font-bold text-electric uppercase tracking-[0.3em] text-xs">Sovereign</h3>
+					<p class="text-[10px] text-ghost leading-relaxed uppercase tracking-widest">Encrypted. Private. Secure.</p>
+				</div>
+				<div class="space-y-3 px-4">
+					<h3 class="font-bold text-electric uppercase tracking-[0.3em] text-xs">Tethered</h3>
+					<p class="text-[10px] text-ghost leading-relaxed uppercase tracking-widest">Cross-device synchronization.</p>
+				</div>
+				<div class="space-y-3 px-4">
+					<h3 class="font-bold text-electric uppercase tracking-[0.3em] text-xs">Aligned</h3>
+					<p class="text-[10px] text-ghost leading-relaxed uppercase tracking-widest">Focused tools, zero tracking.</p>
+				</div>
+			</section>
+		</main>
+
+		<footer class="mt-20 py-8 w-full border-t border-silver/5 flex flex-col items-center space-y-4">
+			<nav class="flex flex-wrap justify-center gap-8 text-[9px] uppercase tracking-[0.2em] text-ghost px-4">
+				<button onclick="document.getElementById('privacy-modal').showModal()" class="hover:text-electric transition-colors uppercase cursor-pointer">Privacy Covenant</button>
+				<button onclick="document.getElementById('sovereignty-modal').showModal()" class="hover:text-electric transition-colors uppercase cursor-pointer">Sovereignty Promise</button>
+				<a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAAah_UNpUMlZRRjlYTU1KRlVNNEw3S1ZPTU9CU0dHVS4u" target="_blank" rel="noopener noreferrer" class="hover:text-electric text-electric/60">Report a Glitch</a>
+			</nav>
+			<p class="text-[9px] uppercase tracking-[0.5em] text-ghost/30">
+				Built on AWS • Designed for the Seekers
+			</p>
+		</footer>
+
+		<dialog id="privacy-modal" class="bg-void border border-silver/20 p-8 rounded-2xl max-w-md text-silver backdrop:backdrop-blur-sm shadow-2xl outline-none">
+			<h2 class="text-electric font-bold tracking-widest uppercase mb-4">Privacy Covenant</h2>
+			<p class="text-ghost text-sm leading-relaxed mb-6">
+				Your rituals and notes are encrypted at rest and in transit. We do not sell your data, nor do we have a "backdoor" into your grimoire. What you weave in Skein stays within your thread.
+			</p>
+			<button onclick="this.closest('dialog').close()" class="text-[10px] uppercase tracking-widest text-silver/50 hover:text-electric cursor-pointer">Close</button>
+		</dialog>
+
+		<dialog id="sovereignty-modal" class="bg-void border border-silver/20 p-8 rounded-2xl max-w-md text-silver backdrop:backdrop-blur-sm shadow-2xl outline-none">
+			<h2 class="text-electric font-bold tracking-widest uppercase mb-4">Sovereignty Promise</h2>
+			<p class="text-ghost text-sm leading-relaxed mb-6">
+				You own your data. Skein supports open-format exports at any time. We promise never to implement "platform lock-in": your knowledge belongs to you, regardless of where you choose to store it.
+			</p>
+			<button onclick="this.closest('dialog').close()" class="text-[10px] uppercase tracking-widest text-silver/50 hover:text-electric cursor-pointer">Close</button>
+		</dialog>
+
+	</body>
+</html>
+
+<style>
+	dialog::backdrop {
+		background: rgba(2, 6, 23, 0.8);
+	}
+	dialog:not([open]) {
+		display: none;
+	}
+</style>
