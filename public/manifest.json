@@ -2,7 +2,7 @@
   "name": "Skein \u2014 Grimoire",
   "short_name": "Skein",
   "description": "Your personal digital grimoire",
-  "start_url": "/grimoire",
+  "start_url": "/app/",
   "display": "standalone",
   "background_color": "#010214",
   "theme_color": "#010214",
