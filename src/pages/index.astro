@@ -1,115 +1,410 @@
 ---
-import { Image } from 'astro:assets';
-import '../styles/global.css';
+import { SITE_TEXT } from '../content/site-text.js';
+const T = SITE_TEXT.landing;
+const M = SITE_TEXT.modals;
 ---
 
 <html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<title>Skein | The Digital Sanctuary</title>
+<head>
+  <meta charset="utf-8" />
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{T.page_title}</title>
 
-		<link rel="manifest" href="/manifest.json" />
-		<meta name="theme-color" content="#010214" />
-		<meta name="description" content="A sovereign sanctuary for the modern seeker." />
+  <link rel="manifest" href="/manifest.json" />
+  <meta name="theme-color" content="#010214" />
+  <meta name="description" content={T.meta_description} />
 
-		<meta name="apple-mobile-web-app-capable" content="yes" />
-		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-		<meta name="apple-mobile-web-app-title" content="Skein" />
-		<link rel="apple-touch-icon" href="/icon-192.png" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="Skein" />
+  <link rel="apple-touch-icon" href="/icon-192.png" />
 
-		<script is:inline>
-			if ('serviceWorker' in navigator) {
-				window.addEventListener('load', () => {
-					navigator.serviceWorker.register('/sw.js')
-						.then(reg => console.log('Skein Sanctuary: Online'))
-						.catch(err => console.log('Registration failed:', err));
-				});
-			}
-		</script>
-	</head>
-	<body class="bg-vignette text-silver font-sans min-h-screen flex flex-col items-center justify-center p-6 selection:bg-electric selection:text-void">
-		
-		<main class="max-w-4xl w-full text-center space-y-12">
-			<section class="flex flex-col items-center space-y-2">
-				<div class="relative group">
-					<div class="absolute inset-0 bg-electric/10 blur-[100px] rounded-full scale-110"></div>
-					<Image 
-						src="/logo.png" 
-						alt="Skein Logo" 
-						width={220} 
-						height={220} 
-						class="relative z-10 text-glow drop-shadow-[0_0_30px_rgba(56,189,248,0.3)]" 
-					/>
-				</div>
-				<h1 class="text-5xl md:text-7xl font-bold tracking-[0.4em] uppercase text-silver pt-6">Skein</h1>
-				<p class="text-lg md:text-xl font-light tracking-[0.15em] text-ghost max-w-lg mx-auto pt-2">
-					A sovereign sanctuary for the modern seeker, woven securely into the cloud.
-				</p>
-			</section>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
 
-			<section class="flex flex-col sm:flex-row gap-6 justify-center items-center">
-				<a href="https://discord.gg/bBKz4fBKUK" target="_blank" rel="noopener noreferrer" class="group relative px-10 py-4 overflow-hidden rounded-full bg-silver text-void font-bold tracking-[0.2em] transition-all hover:scale-105 shadow-[0_0_20px_rgba(255,255,255,0.1)]">
-					<span class="relative z-10 uppercase text-sm">Join the Coven</span>
-					<div class="absolute inset-0 bg-electric/20 translate-y-full group-hover:translate-y-0 transition-transform duration-300"></div>
-				</a>
-				<a href="https://forms.cloud.microsoft/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAAah_UNpUMlZDV09DWklGVU1WMlpMQ09FTlhOWTAyTy4u" target="_blank" rel="noopener noreferrer" class="px-10 py-4 border border-silver/20 rounded-full text-silver font-bold tracking-[0.2em] uppercase text-sm hover:bg-silver/5 transition-all hover:border-electric/50">
-					Inner Circle Waitlist
-				</a>
-			</section>
+  <script is:inline>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+          .then(() => console.log('Skein Sanctuary: Online'))
+          .catch(() => {});
+      });
+    }
+  </script>
 
-			<section class="grid grid-cols-1 md:grid-cols-3 gap-12 pt-16 border-t border-silver/5 text-center">
-				<div class="space-y-3 px-4">
-					<h3 class="font-bold text-electric uppercase tracking-[0.3em] text-xs">Sovereign</h3>
-					<p class="text-[10px] text-ghost leading-relaxed uppercase tracking-widest">Encrypted. Private. Secure.</p>
-				</div>
-				<div class="space-y-3 px-4">
-					<h3 class="font-bold text-electric uppercase tracking-[0.3em] text-xs">Tethered</h3>
-					<p class="text-[10px] text-ghost leading-relaxed uppercase tracking-widest">Cross-device synchronization.</p>
-				</div>
-				<div class="space-y-3 px-4">
-					<h3 class="font-bold text-electric uppercase tracking-[0.3em] text-xs">Aligned</h3>
-					<p class="text-[10px] text-ghost leading-relaxed uppercase tracking-widest">Focused tools, zero tracking.</p>
-				</div>
-			</section>
-		</main>
+  <style is:inline>
+    /* ============================================================
+       CELESTIAL DESIGN SYSTEM — matches the Unreal app palette
+       ============================================================ */
+    :root {
+      --bg:           #010214;
+      --surface1:     #05081f;
+      --surface2:     #0a0e2a;
+      --border:       rgba(80, 90, 180, 0.18);
+      --border-gold:  rgba(132, 107, 45, 0.45);
+      --gold:         #845f2d;
+      --gold-bright:  #c8a44a;
+      --action:       #1e1461;
+      --text-primary: #ebebf7;
+      --text-muted:   #7a7fa8;
+      --text-faint:   #3d4168;
 
-		<footer class="mt-20 py-8 w-full border-t border-silver/5 flex flex-col items-center space-y-4">
-			<nav class="flex flex-wrap justify-center gap-8 text-[9px] uppercase tracking-[0.2em] text-ghost px-4">
-				<button onclick="document.getElementById('privacy-modal').showModal()" class="hover:text-electric transition-colors uppercase cursor-pointer">Privacy Covenant</button>
-				<button onclick="document.getElementById('sovereignty-modal').showModal()" class="hover:text-electric transition-colors uppercase cursor-pointer">Sovereignty Promise</button>
-				<a href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAAah_UNpUMlZRRjlYTU1KRlVNNEw3S1ZPTU9CU0dHVS4u" target="_blank" rel="noopener noreferrer" class="hover:text-electric text-electric/60">Report a Glitch</a>
-			</nav>
-			<p class="text-[9px] uppercase tracking-[0.5em] text-ghost/30">
-				Built on AWS : Designed for the Seekers
-			</p>
-		</footer>
+      --font-display: 'Cinzel', serif;
+      --font-body:    'Cormorant Garamond', serif;
+    }
 
-		<dialog id="privacy-modal" class="bg-void border border-silver/20 p-8 rounded-2xl max-w-md text-silver backdrop:backdrop-blur-sm shadow-2xl outline-none">
-			<h2 class="text-electric font-bold tracking-widest uppercase mb-4">Privacy Covenant</h2>
-			<p class="text-ghost text-sm leading-relaxed mb-6">
-				Your rituals and notes are encrypted at rest and in transit. We do not sell your data, nor do we have a "backdoor" into your grimoire. What you weave in Skein stays within your thread.
-			</p>
-			<button onclick="this.closest('dialog').close()" class="text-[10px] uppercase tracking-widest text-silver/50 hover:text-electric cursor-pointer">Close</button>
-		</dialog>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-		<dialog id="sovereignty-modal" class="bg-void border border-silver/20 p-8 rounded-2xl max-w-md text-silver backdrop:backdrop-blur-sm shadow-2xl outline-none">
-			<h2 class="text-electric font-bold tracking-widest uppercase mb-4">Sovereignty Promise</h2>
-			<p class="text-ghost text-sm leading-relaxed mb-6">
-				You own your data. Skein supports open-format exports at any time. We promise never to implement "platform lock-in" : your knowledge belongs to you, regardless of where you choose to store it.
-			</p>
-			<button onclick="this.closest('dialog').close()" class="text-[10px] uppercase tracking-widest text-silver/50 hover:text-electric cursor-pointer">Close</button>
-		</dialog>
+    html, body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      font-size: 16px;
+      min-height: 100%;
+    }
 
-	</body>
+    /* ---- LAYOUT ---- */
+    .page {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 60px 24px 40px;
+    }
+
+    main {
+      width: 100%;
+      max-width: 540px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0;
+    }
+
+    /* ---- HERO ---- */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding-bottom: 40px;
+      width: 100%;
+    }
+
+    .logo-wrap {
+      position: relative;
+      margin-bottom: 28px;
+    }
+    .logo-glow {
+      position: absolute;
+      inset: -20px;
+      background: radial-gradient(circle, rgba(200, 164, 74, 0.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .logo {
+      position: relative;
+      z-index: 1;
+      width: 180px;
+      height: 180px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 24px rgba(200, 164, 74, 0.25));
+    }
+
+    .wordmark {
+      font-family: var(--font-display);
+      font-size: clamp(40px, 10vw, 64px);
+      font-weight: 700;
+      letter-spacing: 0.36em;
+      color: var(--gold-bright);
+      text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+
+    .tagline {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: clamp(14px, 3vw, 17px);
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 380px;
+      letter-spacing: 0.02em;
+    }
+
+    /* ---- DIVIDER ---- */
+    .divider {
+      width: 100%;
+      border: none;
+      border-top: 1px solid var(--border-gold);
+      margin: 36px 0;
+      opacity: 0.5;
+    }
+
+    /* ---- BUTTONS ---- */
+    .cta-row {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      width: 100%;
+      max-width: 320px;
+      margin-bottom: 48px;
+    }
+    @media (min-width: 480px) {
+      .cta-row { flex-direction: row; max-width: 100%; }
+      .cta-row a { flex: 1; }
+    }
+
+    .btn-primary {
+      display: block;
+      text-align: center;
+      padding: 14px 24px;
+      background: var(--action);
+      border: 1px solid var(--border-gold);
+      color: var(--gold-bright);
+      font-family: var(--font-display);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+    .btn-primary:hover { background: #2a1d85; }
+
+    .btn-ghost {
+      display: block;
+      text-align: center;
+      padding: 14px 24px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      font-family: var(--font-display);
+      font-size: 10px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s;
+    }
+    .btn-ghost:hover {
+      border-color: var(--border-gold);
+      color: var(--gold-bright);
+    }
+
+    /* ---- FEATURE GRID ---- */
+    .features {
+      width: 100%;
+      border-top: 1px solid var(--border);
+      padding-top: 36px;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+      margin-bottom: 48px;
+    }
+    @media (min-width: 480px) {
+      .features { grid-template-columns: repeat(3, 1fr); gap: 0; }
+    }
+
+    .feature {
+      text-align: center;
+      padding: 0 12px;
+    }
+    @media (min-width: 480px) {
+      .feature + .feature { border-left: 1px solid var(--border); }
+    }
+
+    .feature-title {
+      font-family: var(--font-display);
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.3em;
+      color: var(--gold-bright);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .feature-subtitle {
+      font-family: var(--font-display);
+      font-size: 8px;
+      letter-spacing: 0.18em;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      line-height: 1.6;
+    }
+
+    /* ---- FOOTER ---- */
+    footer {
+      width: 100%;
+      max-width: 540px;
+      border-top: 1px solid var(--border);
+      padding-top: 28px;
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .footer-nav {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 24px;
+      list-style: none;
+    }
+
+    .footer-nav a,
+    .footer-nav button {
+      font-family: var(--font-display);
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      text-decoration: none;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s;
+      padding: 0;
+    }
+    .footer-nav a:hover,
+    .footer-nav button:hover { color: var(--gold-bright); }
+    .footer-nav .accent { color: rgba(200, 164, 74, 0.5); }
+    .footer-nav .accent:hover { color: var(--gold-bright); }
+
+    .footer-copy {
+      font-family: var(--font-display);
+      font-size: 7px;
+      letter-spacing: 0.4em;
+      color: var(--text-faint);
+      opacity: 0.5;
+      text-transform: uppercase;
+    }
+
+    /* ---- MODALS ---- */
+    dialog {
+      background: var(--surface1);
+      border: 1px solid var(--border-gold);
+      padding: 32px;
+      max-width: 400px;
+      width: 90%;
+      color: var(--text-primary);
+      outline: none;
+    }
+    dialog::backdrop {
+      background: rgba(1, 2, 20, 0.85);
+      backdrop-filter: blur(4px);
+    }
+    dialog:not([open]) { display: none; }
+
+    .modal-title {
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.22em;
+      color: var(--gold-bright);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .modal-body {
+      font-family: var(--font-body);
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+    .modal-close {
+      font-family: var(--font-display);
+      font-size: 8px;
+      letter-spacing: 0.2em;
+      color: var(--text-faint);
+      text-transform: uppercase;
+      background: none;
+      border: none;
+      cursor: pointer;
+      transition: color 0.2s;
+      padding: 0;
+    }
+    .modal-close:hover { color: var(--gold-bright); }
+  </style>
+</head>
+
+<body>
+<div class="page">
+
+  <main>
+    <!-- Hero -->
+    <section class="hero">
+      <div class="logo-wrap">
+        <div class="logo-glow"></div>
+        <img src="/logo.png" alt="Skein Logo" class="logo" width="180" height="180" />
+      </div>
+      <div class="wordmark">{T.wordmark}</div>
+      <p class="tagline">
+        {T.tagline}<br />{T.tagline2}
+      </p>
+    </section>
+
+    <!-- CTAs -->
+    <div class="cta-row">
+      <a href={T.cta_primary_url} target="_blank" rel="noopener noreferrer" class="btn-primary">
+        {T.cta_primary}
+      </a>
+      <a href={T.cta_secondary_url} target="_blank" rel="noopener noreferrer" class="btn-ghost">
+        {T.cta_secondary}
+      </a>
+    </div>
+
+    <!-- Feature columns -->
+    <div class="features">
+      {T.features.map(f => (
+        <div class="feature">
+          <div class="feature-title">{f.title}</div>
+          <div class="feature-subtitle">{f.subtitle}</div>
+        </div>
+      ))}
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <nav>
+      <ul class="footer-nav">
+        <li>
+          <button onclick="document.getElementById('privacy-modal').showModal()">
+            Privacy Covenant
+          </button>
+        </li>
+        <li>
+          <button onclick="document.getElementById('sovereignty-modal').showModal()">
+            Sovereignty Promise
+          </button>
+        </li>
+        <li>
+          <a href={T.footer_bug_url} target="_blank" rel="noopener noreferrer" class="accent">
+            Report a Glitch
+          </a>
+        </li>
+      </ul>
+    </nav>
+    <p class="footer-copy">{T.footer_built_on}</p>
+  </footer>
+
+</div>
+
+<!-- Privacy Modal -->
+<dialog id="privacy-modal">
+  <div class="modal-title">{M.privacy.title}</div>
+  <p class="modal-body">{M.privacy.body}</p>
+  <button class="modal-close" onclick="this.closest('dialog').close()">Close</button>
+</dialog>
+
+<!-- Sovereignty Modal -->
+<dialog id="sovereignty-modal">
+  <div class="modal-title">{M.sovereignty.title}</div>
+  <p class="modal-body">{M.sovereignty.body}</p>
+  <button class="modal-close" onclick="this.closest('dialog').close()">Close</button>
+</dialog>
+
+</body>
 </html>
-
-<style>
-	dialog::backdrop {
-		background: rgba(2, 6, 23, 0.8);
-	}
-	dialog:not([open]) {
-		display: none;
-	}
-</style>

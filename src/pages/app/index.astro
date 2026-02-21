@@ -1,4 +1,7 @@
 ---
+import { SITE_TEXT } from '../../content/site-text.js';
+const P = SITE_TEXT.pro;
+const L = SITE_TEXT.app_login;
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -534,40 +537,40 @@ html, body {
        LOGIN SCREEN
        ============================================================ -->
   <div id="screen-login" class="screen active">
-    <div class="login-wordmark">SKEIN</div>
-    <div class="login-tagline">Your personal grimoire</div>
+    <div class="login-wordmark">{L.wordmark}</div>
+    <div class="login-tagline">{L.tagline}</div>
 
     <div class="login-tabs">
-      <button class="login-tab active" onclick="showLoginTab('enter')">ENTER</button>
-      <button class="login-tab" onclick="showLoginTab('initiate')">INITIATE</button>
+      <button class="login-tab active" onclick="showLoginTab('enter')">{L.tab_enter}</button>
+      <button class="login-tab" onclick="showLoginTab('initiate')">{L.tab_initiate}</button>
     </div>
 
     <div id="login-form">
       <div class="input-group">
-        <div class="label">Email Address</div>
-        <input type="email" id="login-email" placeholder="your@coven.com" autocomplete="email">
+        <div class="label">{L.label_email}</div>
+        <input type="email" id="login-email" placeholder={L.placeholder_email} autocomplete="email">
       </div>
       <div class="input-group">
-        <div class="label">Passphrase</div>
-        <input type="password" id="login-password" placeholder="words of power" autocomplete="current-password">
+        <div class="label">{L.label_password}</div>
+        <input type="password" id="login-password" placeholder={L.placeholder_password} autocomplete="current-password">
       </div>
-      <button class="btn-primary" onclick="handleLogin()">OPEN THE TOME</button>
+      <button class="btn-primary" onclick="handleLogin()">{L.btn_login}</button>
     </div>
 
     <div id="register-form" style="display:none">
       <div class="input-group">
-        <div class="label">Email Address</div>
-        <input type="email" id="reg-email" placeholder="your@coven.com" autocomplete="email">
+        <div class="label">{L.label_email}</div>
+        <input type="email" id="reg-email" placeholder={L.placeholder_email} autocomplete="email">
       </div>
       <div class="input-group">
-        <div class="label">Craft a Passphrase</div>
-        <input type="password" id="reg-password" placeholder="8+ chars, uppercase & symbol" autocomplete="new-password">
+        <div class="label">{L.label_new_password}</div>
+        <input type="password" id="reg-password" placeholder={L.placeholder_new_password} autocomplete="new-password">
       </div>
       <div class="input-group">
-        <div class="label">Confirm Passphrase</div>
-        <input type="password" id="reg-confirm" placeholder="once more, with feeling" autocomplete="new-password">
+        <div class="label">{L.label_confirm_password}</div>
+        <input type="password" id="reg-confirm" placeholder={L.placeholder_confirm_password} autocomplete="new-password">
       </div>
-      <button class="btn-primary" onclick="handleRegister()">BEGIN THE RITE</button>
+      <button class="btn-primary" onclick="handleRegister()">{L.btn_register}</button>
     </div>
 
     <div id="verify-form" style="display:none">
@@ -575,10 +578,10 @@ html, body {
         A verification code has been sent to your email.
       </div>
       <div class="input-group">
-        <div class="label">Verification Code</div>
-        <input type="text" id="verify-code" placeholder="6-digit code" autocomplete="one-time-code" inputmode="numeric">
+        <div class="label">{L.label_verify_code}</div>
+        <input type="text" id="verify-code" placeholder={L.placeholder_verify_code} autocomplete="one-time-code" inputmode="numeric">
       </div>
-      <button class="btn-primary" onclick="handleVerify()">CONSECRATE THE SEAL</button>
+      <button class="btn-primary" onclick="handleVerify()">{L.btn_verify}</button>
     </div>
 
     <div id="login-status" class="status"></div>
@@ -770,55 +773,45 @@ html, body {
   <div id="screen-pro" class="screen">
     <div class="top-bar">
       <button class="back-btn" onclick="navigateBack()">← BACK</button>
-      <span class="wordmark" style="flex:1;text-align:center">SKEIN PRO</span>
+      <span class="wordmark" style="flex:1;text-align:center">{P.screen_title}</span>
       <div style="width:60px"></div>
     </div>
 
     <div class="scroll-area no-nav">
       <div style="text-align:center;padding:var(--pad-xl) 0 var(--pad-lg)">
-        <div style="font-family:var(--font-display);font-size:32px;color:var(--gold-bright);letter-spacing:0.2em;margin-bottom:var(--pad-sm)">◈</div>
-        <div class="heading-display" style="margin-bottom:var(--pad-sm)">UNLOCK THE FULL GRIMOIRE</div>
+        <div style="font-family:var(--font-display);font-size:32px;color:var(--gold-bright);letter-spacing:0.2em;margin-bottom:var(--pad-sm)">{P.glyph}</div>
+        <div class="heading-display" style="margin-bottom:var(--pad-sm)">{P.headline}</div>
         <div class="body-text" style="max-width:320px;margin:0 auto">
-          A single purchase unlocks Skein forever — across all your devices.
+          {P.description}
         </div>
       </div>
 
       <div style="background:var(--surface1);border:1px solid var(--border-gold);padding:var(--pad-lg);margin-bottom:var(--pad-lg)">
         <div style="display:flex;flex-direction:column;gap:var(--pad-sm);margin-bottom:var(--pad-lg)">
-          <div style="display:flex;gap:var(--pad-sm);align-items:center">
-            <span style="color:var(--gold-bright);font-family:var(--font-display)">◈</span>
-            <span class="body-text">Unlimited grimoire entries</span>
-          </div>
-          <div style="display:flex;gap:var(--pad-sm);align-items:center">
-            <span style="color:var(--gold-bright);font-family:var(--font-display)">◈</span>
-            <span class="body-text">Cloud sync across all devices</span>
-          </div>
-          <div style="display:flex;gap:var(--pad-sm);align-items:center">
-            <span style="color:var(--gold-bright);font-family:var(--font-display)">◈</span>
-            <span class="body-text">Desktop + Android + iOS (PWA)</span>
-          </div>
-          <div style="display:flex;gap:var(--pad-sm);align-items:center">
-            <span style="color:var(--gold-bright);font-family:var(--font-display)">◈</span>
-            <span class="body-text">All future updates included</span>
-          </div>
+          {P.features.map((feature: string) => (
+            <div style="display:flex;gap:var(--pad-sm);align-items:center">
+              <span style="color:var(--gold-bright);font-family:var(--font-display)">{P.glyph}</span>
+              <span class="body-text">{feature}</span>
+            </div>
+          ))}
         </div>
-        <!-- Lemon Squeezy checkout button — replace data-store and data-product with your LS values -->
+        <!-- Gumroad checkout button — replace href with your Gumroad product URL -->
         <a
           class="btn-primary"
           style="display:block;text-align:center;text-decoration:none;cursor:pointer"
-          href="https://skein.lemonsqueezy.com/checkout"
+          href="https://skein.gumroad.com/l/pro"
           target="_blank"
-          id="ls-checkout-btn"
+          id="gr-checkout-btn"
         >PURCHASE SKEIN PRO</a>
       </div>
 
       <div style="background:var(--surface1);border:1px solid var(--border);padding:var(--pad-md);margin-bottom:var(--pad-md)">
-        <div class="section-header" style="margin-bottom:var(--pad-md)">ALREADY PURCHASED?</div>
+        <div class="section-header" style="margin-bottom:var(--pad-md)">{P.already_purchased_label}</div>
         <div class="input-group">
-          <div class="label">License Key</div>
-          <input type="text" id="license-key-input" placeholder="SKEIN-XXXX-XXXX-XXXX" autocomplete="off">
+          <div class="label">Gumroad License Key</div>
+          <input type="text" id="license-key-input" placeholder="XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX" autocomplete="off">
         </div>
-        <button class="btn-ghost" style="width:100%" onclick="activateLicense()">ACTIVATE LICENSE</button>
+        <button class="btn-ghost" style="width:100%" onclick="activateLicense()">{P.btn_activate_license}</button>
         <div id="license-status" class="status"></div>
       </div>
     </div>
@@ -941,21 +934,36 @@ function parseJwt(token) {
 //  API
 // ============================================================
 async function apiCall(action, body) {
-  // Refresh token if expired
-  const claims = parseJwt(state.tokens?.AccessToken || '');
+  if (!state.tokens?.AccessToken) throw new Error('Not signed in — please reload and log in again');
+
+  // Refresh token if expired or expiring soon
+  const claims = parseJwt(state.tokens.AccessToken);
   if (claims.exp && claims.exp < Date.now() / 1000 + 60) {
-    await refreshTokens();
+    const refreshed = await refreshTokens();
+    if (!refreshed) throw new Error('Session expired — please sign in again');
   }
 
-  const res = await fetch(CONFIG.apiEndpoint, {
-    method:  'POST',
-    headers: {
-      'Content-Type':  'application/json',
-      'Authorization': state.tokens?.AccessToken || '',
-    },
-    body: JSON.stringify({ action, userID: state.userSub, body }),
-  });
-  const data = await res.json();
+  let res;
+  try {
+    res = await fetch(CONFIG.apiEndpoint, {
+      method:  'POST',
+      headers: {
+        'Content-Type':  'application/json',
+        'Authorization': state.tokens?.AccessToken || '',
+      },
+      body: JSON.stringify({ action, userID: state.userSub, body }),
+    });
+  } catch(networkErr) {
+    throw new Error('Network error — check your connection and try again');
+  }
+
+  let data;
+  try {
+    data = await res.json();
+  } catch(parseErr) {
+    throw new Error(`Server error (${res.status}) — please try again`);
+  }
+
   if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
   return data;
 }
@@ -1220,10 +1228,12 @@ function handleSignOut() {
   state.userEmail = '';
   state.userSub   = '';
   state.entries   = [];
+  state.isPro     = false;
   Storage.remove('tokens');
   Storage.remove('userEmail');
   Storage.remove('userSub');
   Storage.remove('entries');
+  Storage.remove('isPro');
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-login').classList.add('active');
   showLoginTab('enter');
@@ -1265,6 +1275,7 @@ function renderRecentEntries() {
   const container = document.getElementById('recent-entries');
   container.innerHTML = '';
   const recent = [...state.entries]
+    .filter(e => !e.IsDeleted && !e.isDeleted)
     .sort((a, b) => (b.UpdatedAt || b.updatedAt || '').localeCompare(a.UpdatedAt || a.updatedAt || ''))
     .slice(0, 5);
 
@@ -1420,6 +1431,9 @@ function setEditorStatus(msg, type) {
 }
 
 async function handleSave() {
+  const saveBtn = document.querySelector('.editor-save');
+  if (saveBtn?.disabled) return;
+
   const title = document.getElementById('editor-title').value.trim();
   if (!title) return setEditorStatus('Title required to save.', 'error');
 
@@ -1444,6 +1458,7 @@ async function handleSave() {
     version:      isNew ? 0 : (state.editingEntry.Version || state.editingEntry.version || 0),
   };
 
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'SAVING...'; }
   setEditorStatus('Saving...', 'info');
   try {
     const result = await apiCall('entry:save', entry);
@@ -1477,6 +1492,7 @@ async function handleSave() {
   } catch(e) {
     setEditorStatus('Save failed: ' + e.message, 'error');
     setSyncPill('failed');
+    if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'SAVE ENTRY'; }
   }
 }
 
@@ -1563,7 +1579,7 @@ async function triggerFullSync() {
 
 
 // ============================================================
-//  PRO / LICENSE
+//  PRO / LICENSE (Gumroad)
 // ============================================================
 async function checkLicenseStatus() {
   if (!state.userSub) return;
@@ -1581,19 +1597,21 @@ async function checkLicenseStatus() {
 async function activateLicense() {
   const key = document.getElementById('license-key-input').value.trim();
   if (!key) {
-    setLicenseStatus('Enter your license key.', 'error');
+    setLicenseStatus('Enter your Gumroad license key.', 'error');
     return;
   }
   setLicenseStatus('Validating...', 'info');
   try {
-    const result = await apiCall('license:validate', { licenseKey: key });
+    // Verify with Gumroad's license API via backend proxy
+    const result = await apiCall('license:validate', { licenseKey: key, provider: 'gumroad' });
     if (result.isPro) {
       state.isPro = true;
       Storage.save('isPro', true);
+      Storage.save('licenseKey', key);
       setLicenseStatus('License activated! Welcome to Skein Pro.', 'success');
       setTimeout(() => navigateBack(), 1500);
     } else {
-      setLicenseStatus(result.message || 'Invalid or expired license key.', 'error');
+      setLicenseStatus(result.message || 'Invalid or expired Gumroad license key.', 'error');
     }
   } catch(e) {
     setLicenseStatus('Validation failed: ' + e.message, 'error');
@@ -1628,7 +1646,12 @@ async function init() {
 
     // Try to refresh tokens to verify session is still valid
     const valid = await refreshTokens().catch(() => false);
-    if (valid || tokens.AccessToken) {
+    // Proceed if refresh succeeded, or if the access token itself is still unexpired
+    // (handles the case where refresh fails due to a transient network error)
+    const accessClaims = parseJwt(state.tokens?.AccessToken || '');
+    const tokenStillValid = accessClaims.exp && accessClaims.exp > Date.now() / 1000;
+    if (valid || tokenStillValid) {
+      checkLicenseStatus();
       navigateTo('dashboard');
       loadEntriesFromCloud();
       return;
