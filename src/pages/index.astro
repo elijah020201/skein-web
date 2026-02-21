@@ -1,10 +1,13 @@
 ---
 // src/pages/app/index.astro
+// Using a relative path that is more reliable during build
 import { SITE_TEXT } from '../../content/site-text.js';
+
 const P = SITE_TEXT.pro;
 const L = SITE_TEXT.app_login;
 
-layout: null 
+// We use partial to tell Astro not to look for a default layout
+export const partial = true; 
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -23,54 +26,31 @@ layout: null
       --text-primary: #ebebf7; --text-muted: #7a7fa8;
       --font-display: 'Cinzel', serif; --font-body: 'Cormorant Garamond', serif;
     }
-
-    body { 
-      background: var(--bg); color: var(--text-primary); 
-      font-family: var(--font-body); margin: 0; overflow: hidden; 
-    }
-
+    body { background: var(--bg); color: var(--text-primary); font-family: var(--font-body); margin: 0; overflow: hidden; }
     #app-container { height: 100vh; display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; }
     .screen { display: none; flex-direction: column; flex: 1; padding: 2rem; }
     .screen.active { display: flex; }
-
     .input-wrap { margin-bottom: 1.5rem; }
     label { font-family: var(--font-display); font-size: 10px; color: var(--gold-bright); letter-spacing: 0.1em; display: block; margin-bottom: 0.5rem; }
-    
-    input { 
-      width: 100%; background: var(--surface2); border: 1px solid rgba(80, 90, 180, 0.2); 
-      color: white; padding: 1rem; border-radius: 4px; outline: none;
-    }
-    input:focus { border-color: var(--gold); }
-
-    .btn-celestial { 
-      background: var(--action); color: var(--gold-bright); border: 1px solid var(--gold);
-      padding: 1rem; font-family: var(--font-display); cursor: pointer; text-transform: uppercase;
-      letter-spacing: 0.2em; font-size: 12px; transition: all 0.3s ease;
-    }
-    .btn-celestial:hover { background: #2a1b8a; border-color: var(--gold-bright); }
-
-    #error-msg { color: #ff4d4d; font-size: 0.85rem; text-align: center; margin-top: 1rem; display: none; font-style: italic; }
+    input { width: 100%; background: var(--surface2); border: 1px solid rgba(80, 90, 180, 0.2); color: white; padding: 1rem; border-radius: 4px; outline: none; box-sizing: border-box; }
+    .btn-celestial { background: var(--action); color: var(--gold-bright); border: 1px solid var(--gold); padding: 1rem; font-family: var(--font-display); cursor: pointer; text-transform: uppercase; letter-spacing: 0.2em; font-size: 12px; }
+    #error-msg { color: #ff4d4d; font-size: 0.85rem; text-align: center; margin-top: 1rem; display: none; }
   </style>
 </head>
 <body>
-
   <div id="app-container">
     <div id="screen-login" class="screen active">
       <div style="text-align:center; margin: 4rem 0;">
-        <img src="/logo.png" style="width: 80px; filter: drop-shadow(0 0 10px rgba(200, 164, 74, 0.3));">
-        <h1 style="font-family: var(--font-display); color: var(--gold); margin-top: 1.5rem; letter-spacing: 0.4em;">SKEIN</h1>
+        <h1 style="font-family: var(--font-display); color: var(--gold); letter-spacing: 0.4em;">SKEIN</h1>
       </div>
-      
       <div class="input-wrap">
         <label>Seeker Identity</label>
         <input type="email" id="user-email" placeholder="email@sanctuary.com">
       </div>
-      
       <div class="input-wrap">
         <label>Keyphrase</label>
         <input type="password" id="user-pass" placeholder="••••••••">
       </div>
-
       <button class="btn-celestial" id="auth-btn" onclick="handleAuth()">Authorize Entry</button>
       <p id="error-msg"></p>
     </div>
@@ -80,12 +60,10 @@ layout: null
       <div id="thread-list" style="margin-top: 2rem;">
          <p style="color: var(--text-muted); text-align: center; font-style: italic;">Connecting to the threads...</p>
       </div>
-      <button class="btn-celestial" onclick="logout()" style="margin-top: auto; font-size: 10px; border: none; background: transparent; color: var(--text-muted);">Sever Connection</button>
     </div>
   </div>
 
   <script is:inline>
-    // --- AWS CONFIGURATION ---
     const API_URL = 'https://yjgpdnscte.execute-api.us-east-1.amazonaws.com/prod'; 
 
     function navigateTo(id) {
@@ -96,50 +74,31 @@ layout: null
     async function handleAuth() {
       const email = document.getElementById('user-email').value;
       const btn = document.getElementById('auth-btn');
-      
-      if (!email) {
-        showError("Identify yourself, seeker.");
-        return;
-      }
+      if (!email) { showError("Identify yourself, seeker."); return; }
 
       btn.textContent = "Verifying...";
-      btn.disabled = true;
-
       try {
-        // This checks if the Lambda 'Brain' is responsive
-        const response = await fetch(API_URL, {
-          method: 'GET',
-          headers: { 'Content-Type': 'application/json' }
-        });
-
+        const response = await fetch(API_URL);
         if (response.ok) {
           localStorage.setItem('skein_session', email);
           navigateTo('dashboard');
         } else {
-          showError("The sanctuary is currently sealed.");
+          showError("The sanctuary is sealed.");
         }
       } catch (err) {
-        showError("Network Error: Could not reach the sanctuary.");
+        showError("Network Error.");
       } finally {
         btn.textContent = "Authorize Entry";
-        btn.disabled = false;
       }
     }
 
     function showError(msg) {
-      const errorDiv = document.getElementById('error-msg');
-      errorDiv.textContent = msg;
-      errorDiv.style.display = 'block';
-    }
-
-    function logout() {
-      localStorage.removeItem('skein_session');
-      location.reload();
+      const e = document.getElementById('error-msg');
+      e.textContent = msg; e.style.display = 'block';
     }
 
     window.onload = () => {
-      const session = localStorage.getItem('skein_session');
-      if (session) navigateTo('dashboard');
+      if (localStorage.getItem('skein_session')) navigateTo('dashboard');
     };
   </script>
 </body>
