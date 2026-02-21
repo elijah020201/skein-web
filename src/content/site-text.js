@@ -80,8 +80,7 @@ export const SITE_TEXT = {
 
     btn_purchase: 'PURCHASE SKEIN PRO',
 
-    // ★  Update this URL to your Gumroad product link  ★
-    gumroad_url:  'https://skeinapp.gumroad.com/l/pro',
+    gumroad_url:  'https://skeinapp.gumroad.com/l/iofbgy',
 
     already_purchased_label: 'ALREADY PURCHASED?',
     license_placeholder:     'SKEIN-XXXX-XXXX-XXXX',
