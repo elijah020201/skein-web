@@ -1,410 +1,146 @@
 ---
-import { SITE_TEXT } from '../content/site-text.js';
-const T = SITE_TEXT.landing;
-const M = SITE_TEXT.modals;
----
+// src/pages/app/index.astro
+import { SITE_TEXT } from '../../content/site-text.js';
+const P = SITE_TEXT.pro;
+const L = SITE_TEXT.app_login;
 
+layout: null 
+---
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>{T.page_title}</title>
-
-  <link rel="manifest" href="/manifest.json" />
-  <meta name="theme-color" content="#010214" />
-  <meta name="description" content={T.meta_description} />
-
-  <meta name="apple-mobile-web-app-capable" content="yes" />
-  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-  <meta name="apple-mobile-web-app-title" content="Skein" />
-  <link rel="apple-touch-icon" href="/icon-192.png" />
-
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
-
-  <script is:inline>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then(() => console.log('Skein Sanctuary: Online'))
-          .catch(() => {});
-      });
-    }
-  </script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Skein — {L.title}</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
 
   <style is:inline>
-    /* ============================================================
-       CELESTIAL DESIGN SYSTEM — matches the Unreal app palette
-       ============================================================ */
     :root {
-      --bg:           #010214;
-      --surface1:     #05081f;
-      --surface2:     #0a0e2a;
-      --border:       rgba(80, 90, 180, 0.18);
-      --border-gold:  rgba(132, 107, 45, 0.45);
-      --gold:         #845f2d;
-      --gold-bright:  #c8a44a;
-      --action:       #1e1461;
-      --text-primary: #ebebf7;
-      --text-muted:   #7a7fa8;
-      --text-faint:   #3d4168;
-
-      --font-display: 'Cinzel', serif;
-      --font-body:    'Cormorant Garamond', serif;
+      --bg: #010214; --surface1: #05081f; --surface2: #0a0e2a; 
+      --gold: #845f2d; --gold-bright: #c8a44a; --action: #1e1461;
+      --text-primary: #ebebf7; --text-muted: #7a7fa8;
+      --font-display: 'Cinzel', serif; --font-body: 'Cormorant Garamond', serif;
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    html, body {
-      background: var(--bg);
-      color: var(--text-primary);
-      font-family: var(--font-body);
-      font-size: 16px;
-      min-height: 100%;
+    body { 
+      background: var(--bg); color: var(--text-primary); 
+      font-family: var(--font-body); margin: 0; overflow: hidden; 
     }
 
-    /* ---- LAYOUT ---- */
-    .page {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 60px 24px 40px;
-    }
+    #app-container { height: 100vh; display: flex; flex-direction: column; max-width: 480px; margin: 0 auto; }
+    .screen { display: none; flex-direction: column; flex: 1; padding: 2rem; }
+    .screen.active { display: flex; }
 
-    main {
-      width: 100%;
-      max-width: 540px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 0;
+    .input-wrap { margin-bottom: 1.5rem; }
+    label { font-family: var(--font-display); font-size: 10px; color: var(--gold-bright); letter-spacing: 0.1em; display: block; margin-bottom: 0.5rem; }
+    
+    input { 
+      width: 100%; background: var(--surface2); border: 1px solid rgba(80, 90, 180, 0.2); 
+      color: white; padding: 1rem; border-radius: 4px; outline: none;
     }
+    input:focus { border-color: var(--gold); }
 
-    /* ---- HERO ---- */
-    .hero {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      padding-bottom: 40px;
-      width: 100%;
+    .btn-celestial { 
+      background: var(--action); color: var(--gold-bright); border: 1px solid var(--gold);
+      padding: 1rem; font-family: var(--font-display); cursor: pointer; text-transform: uppercase;
+      letter-spacing: 0.2em; font-size: 12px; transition: all 0.3s ease;
     }
+    .btn-celestial:hover { background: #2a1b8a; border-color: var(--gold-bright); }
 
-    .logo-wrap {
-      position: relative;
-      margin-bottom: 28px;
-    }
-    .logo-glow {
-      position: absolute;
-      inset: -20px;
-      background: radial-gradient(circle, rgba(200, 164, 74, 0.12) 0%, transparent 70%);
-      pointer-events: none;
-    }
-    .logo {
-      position: relative;
-      z-index: 1;
-      width: 180px;
-      height: 180px;
-      object-fit: contain;
-      filter: drop-shadow(0 0 24px rgba(200, 164, 74, 0.25));
-    }
-
-    .wordmark {
-      font-family: var(--font-display);
-      font-size: clamp(40px, 10vw, 64px);
-      font-weight: 700;
-      letter-spacing: 0.36em;
-      color: var(--gold-bright);
-      text-transform: uppercase;
-      margin-bottom: 12px;
-    }
-
-    .tagline {
-      font-family: var(--font-body);
-      font-style: italic;
-      font-size: clamp(14px, 3vw, 17px);
-      color: var(--text-muted);
-      line-height: 1.6;
-      max-width: 380px;
-      letter-spacing: 0.02em;
-    }
-
-    /* ---- DIVIDER ---- */
-    .divider {
-      width: 100%;
-      border: none;
-      border-top: 1px solid var(--border-gold);
-      margin: 36px 0;
-      opacity: 0.5;
-    }
-
-    /* ---- BUTTONS ---- */
-    .cta-row {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-      width: 100%;
-      max-width: 320px;
-      margin-bottom: 48px;
-    }
-    @media (min-width: 480px) {
-      .cta-row { flex-direction: row; max-width: 100%; }
-      .cta-row a { flex: 1; }
-    }
-
-    .btn-primary {
-      display: block;
-      text-align: center;
-      padding: 14px 24px;
-      background: var(--action);
-      border: 1px solid var(--border-gold);
-      color: var(--gold-bright);
-      font-family: var(--font-display);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      text-decoration: none;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .btn-primary:hover { background: #2a1d85; }
-
-    .btn-ghost {
-      display: block;
-      text-align: center;
-      padding: 14px 24px;
-      background: transparent;
-      border: 1px solid var(--border);
-      color: var(--text-muted);
-      font-family: var(--font-display);
-      font-size: 10px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      text-decoration: none;
-      cursor: pointer;
-      transition: border-color 0.2s, color 0.2s;
-    }
-    .btn-ghost:hover {
-      border-color: var(--border-gold);
-      color: var(--gold-bright);
-    }
-
-    /* ---- FEATURE GRID ---- */
-    .features {
-      width: 100%;
-      border-top: 1px solid var(--border);
-      padding-top: 36px;
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 28px;
-      margin-bottom: 48px;
-    }
-    @media (min-width: 480px) {
-      .features { grid-template-columns: repeat(3, 1fr); gap: 0; }
-    }
-
-    .feature {
-      text-align: center;
-      padding: 0 12px;
-    }
-    @media (min-width: 480px) {
-      .feature + .feature { border-left: 1px solid var(--border); }
-    }
-
-    .feature-title {
-      font-family: var(--font-display);
-      font-size: 10px;
-      font-weight: 600;
-      letter-spacing: 0.3em;
-      color: var(--gold-bright);
-      text-transform: uppercase;
-      margin-bottom: 8px;
-    }
-    .feature-subtitle {
-      font-family: var(--font-display);
-      font-size: 8px;
-      letter-spacing: 0.18em;
-      color: var(--text-faint);
-      text-transform: uppercase;
-      line-height: 1.6;
-    }
-
-    /* ---- FOOTER ---- */
-    footer {
-      width: 100%;
-      max-width: 540px;
-      border-top: 1px solid var(--border);
-      padding-top: 28px;
-      margin-top: auto;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 16px;
-    }
-
-    .footer-nav {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 24px;
-      list-style: none;
-    }
-
-    .footer-nav a,
-    .footer-nav button {
-      font-family: var(--font-display);
-      font-size: 8px;
-      letter-spacing: 0.2em;
-      color: var(--text-faint);
-      text-transform: uppercase;
-      text-decoration: none;
-      background: none;
-      border: none;
-      cursor: pointer;
-      transition: color 0.2s;
-      padding: 0;
-    }
-    .footer-nav a:hover,
-    .footer-nav button:hover { color: var(--gold-bright); }
-    .footer-nav .accent { color: rgba(200, 164, 74, 0.5); }
-    .footer-nav .accent:hover { color: var(--gold-bright); }
-
-    .footer-copy {
-      font-family: var(--font-display);
-      font-size: 7px;
-      letter-spacing: 0.4em;
-      color: var(--text-faint);
-      opacity: 0.5;
-      text-transform: uppercase;
-    }
-
-    /* ---- MODALS ---- */
-    dialog {
-      background: var(--surface1);
-      border: 1px solid var(--border-gold);
-      padding: 32px;
-      max-width: 400px;
-      width: 90%;
-      color: var(--text-primary);
-      outline: none;
-    }
-    dialog::backdrop {
-      background: rgba(1, 2, 20, 0.85);
-      backdrop-filter: blur(4px);
-    }
-    dialog:not([open]) { display: none; }
-
-    .modal-title {
-      font-family: var(--font-display);
-      font-size: 11px;
-      font-weight: 600;
-      letter-spacing: 0.22em;
-      color: var(--gold-bright);
-      text-transform: uppercase;
-      margin-bottom: 16px;
-    }
-    .modal-body {
-      font-family: var(--font-body);
-      font-size: 15px;
-      color: var(--text-muted);
-      line-height: 1.6;
-      margin-bottom: 24px;
-    }
-    .modal-close {
-      font-family: var(--font-display);
-      font-size: 8px;
-      letter-spacing: 0.2em;
-      color: var(--text-faint);
-      text-transform: uppercase;
-      background: none;
-      border: none;
-      cursor: pointer;
-      transition: color 0.2s;
-      padding: 0;
-    }
-    .modal-close:hover { color: var(--gold-bright); }
+    #error-msg { color: #ff4d4d; font-size: 0.85rem; text-align: center; margin-top: 1rem; display: none; font-style: italic; }
   </style>
 </head>
-
 <body>
-<div class="page">
 
-  <main>
-    <!-- Hero -->
-    <section class="hero">
-      <div class="logo-wrap">
-        <div class="logo-glow"></div>
-        <img src="/logo.png" alt="Skein Logo" class="logo" width="180" height="180" />
+  <div id="app-container">
+    <div id="screen-login" class="screen active">
+      <div style="text-align:center; margin: 4rem 0;">
+        <img src="/logo.png" style="width: 80px; filter: drop-shadow(0 0 10px rgba(200, 164, 74, 0.3));">
+        <h1 style="font-family: var(--font-display); color: var(--gold); margin-top: 1.5rem; letter-spacing: 0.4em;">SKEIN</h1>
       </div>
-      <div class="wordmark">{T.wordmark}</div>
-      <p class="tagline">
-        {T.tagline}<br />{T.tagline2}
-      </p>
-    </section>
+      
+      <div class="input-wrap">
+        <label>Seeker Identity</label>
+        <input type="email" id="user-email" placeholder="email@sanctuary.com">
+      </div>
+      
+      <div class="input-wrap">
+        <label>Keyphrase</label>
+        <input type="password" id="user-pass" placeholder="••••••••">
+      </div>
 
-    <!-- CTAs -->
-    <div class="cta-row">
-      <a href={T.cta_primary_url} target="_blank" rel="noopener noreferrer" class="btn-primary">
-        {T.cta_primary}
-      </a>
-      <a href={T.cta_secondary_url} target="_blank" rel="noopener noreferrer" class="btn-ghost">
-        {T.cta_secondary}
-      </a>
+      <button class="btn-celestial" id="auth-btn" onclick="handleAuth()">Authorize Entry</button>
+      <p id="error-msg"></p>
     </div>
 
-    <!-- Feature columns -->
-    <div class="features">
-      {T.features.map(f => (
-        <div class="feature">
-          <div class="feature-title">{f.title}</div>
-          <div class="feature-subtitle">{f.subtitle}</div>
-        </div>
-      ))}
+    <div id="screen-dashboard" class="screen">
+      <h2 style="font-family: var(--font-display); color: var(--gold);">{P.title}</h2>
+      <div id="thread-list" style="margin-top: 2rem;">
+         <p style="color: var(--text-muted); text-align: center; font-style: italic;">Connecting to the threads...</p>
+      </div>
+      <button class="btn-celestial" onclick="logout()" style="margin-top: auto; font-size: 10px; border: none; background: transparent; color: var(--text-muted);">Sever Connection</button>
     </div>
-  </main>
+  </div>
 
-  <!-- Footer -->
-  <footer>
-    <nav>
-      <ul class="footer-nav">
-        <li>
-          <button onclick="document.getElementById('privacy-modal').showModal()">
-            Privacy Covenant
-          </button>
-        </li>
-        <li>
-          <button onclick="document.getElementById('sovereignty-modal').showModal()">
-            Sovereignty Promise
-          </button>
-        </li>
-        <li>
-          <a href={T.footer_bug_url} target="_blank" rel="noopener noreferrer" class="accent">
-            Report a Glitch
-          </a>
-        </li>
-      </ul>
-    </nav>
-    <p class="footer-copy">{T.footer_built_on}</p>
-  </footer>
+  <script is:inline>
+    // --- AWS CONFIGURATION ---
+    const API_URL = 'https://yjgpdnscte.execute-api.us-east-1.amazonaws.com/prod'; 
 
-</div>
+    function navigateTo(id) {
+      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+      document.getElementById(`screen-${id}`).classList.add('active');
+    }
 
-<!-- Privacy Modal -->
-<dialog id="privacy-modal">
-  <div class="modal-title">{M.privacy.title}</div>
-  <p class="modal-body">{M.privacy.body}</p>
-  <button class="modal-close" onclick="this.closest('dialog').close()">Close</button>
-</dialog>
+    async function handleAuth() {
+      const email = document.getElementById('user-email').value;
+      const btn = document.getElementById('auth-btn');
+      
+      if (!email) {
+        showError("Identify yourself, seeker.");
+        return;
+      }
 
-<!-- Sovereignty Modal -->
-<dialog id="sovereignty-modal">
-  <div class="modal-title">{M.sovereignty.title}</div>
-  <p class="modal-body">{M.sovereignty.body}</p>
-  <button class="modal-close" onclick="this.closest('dialog').close()">Close</button>
-</dialog>
+      btn.textContent = "Verifying...";
+      btn.disabled = true;
 
+      try {
+        // This checks if the Lambda 'Brain' is responsive
+        const response = await fetch(API_URL, {
+          method: 'GET',
+          headers: { 'Content-Type': 'application/json' }
+        });
+
+        if (response.ok) {
+          localStorage.setItem('skein_session', email);
+          navigateTo('dashboard');
+        } else {
+          showError("The sanctuary is currently sealed.");
+        }
+      } catch (err) {
+        showError("Network Error: Could not reach the sanctuary.");
+      } finally {
+        btn.textContent = "Authorize Entry";
+        btn.disabled = false;
+      }
+    }
+
+    function showError(msg) {
+      const errorDiv = document.getElementById('error-msg');
+      errorDiv.textContent = msg;
+      errorDiv.style.display = 'block';
+    }
+
+    function logout() {
+      localStorage.removeItem('skein_session');
+      location.reload();
+    }
+
+    window.onload = () => {
+      const session = localStorage.getItem('skein_session');
+      if (session) navigateTo('dashboard');
+    };
+  </script>
 </body>
 </html>
