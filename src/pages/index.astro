@@ -1,12 +1,6 @@
 ---
 // src/pages/app/index.astro
-// Using a relative path that is more reliable during build
-import { SITE_TEXT } from '../../content/site-text.js';
-
-const P = SITE_TEXT.pro;
-const L = SITE_TEXT.app_login;
-
-// We use partial to tell Astro not to look for a default layout
+// Standalone version - No imports to prevent build failures
 export const partial = true; 
 ---
 <!DOCTYPE html>
@@ -14,7 +8,7 @@ export const partial = true;
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Skein — {L.title}</title>
+  <title>Skein — Sanctuary Login</title>
   
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
@@ -56,14 +50,16 @@ export const partial = true;
     </div>
 
     <div id="screen-dashboard" class="screen">
-      <h2 style="font-family: var(--font-display); color: var(--gold);">{P.title}</h2>
+      <h2 style="font-family: var(--font-display); color: var(--gold);">Sanctuary Dashboard</h2>
       <div id="thread-list" style="margin-top: 2rem;">
-         <p style="color: var(--text-muted); text-align: center; font-style: italic;">Connecting to the threads...</p>
+         <p style="color: var(--text-muted); text-align: center; font-style: italic;">The Threads of Fate are loading...</p>
       </div>
+      <button class="btn-celestial" onclick="localStorage.removeItem('skein_session'); location.reload();" style="margin-top: auto;">Disconnect</button>
     </div>
   </div>
 
   <script is:inline>
+    // Fixed API URL
     const API_URL = 'https://yjgpdnscte.execute-api.us-east-1.amazonaws.com/prod'; 
 
     function navigateTo(id) {
@@ -83,7 +79,7 @@ export const partial = true;
           localStorage.setItem('skein_session', email);
           navigateTo('dashboard');
         } else {
-          showError("The sanctuary is sealed.");
+          showError("Access Denied.");
         }
       } catch (err) {
         showError("Network Error.");
