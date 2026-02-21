@@ -934,21 +934,36 @@ function parseJwt(token) {
 //  API
 // ============================================================
 async function apiCall(action, body) {
-  // Refresh token if expired
-  const claims = parseJwt(state.tokens?.AccessToken || '');
+  if (!state.tokens?.AccessToken) throw new Error('Not signed in — please reload and log in again');
+
+  // Refresh token if expired or expiring soon
+  const claims = parseJwt(state.tokens.AccessToken);
   if (claims.exp && claims.exp < Date.now() / 1000 + 60) {
-    await refreshTokens();
+    const refreshed = await refreshTokens();
+    if (!refreshed) throw new Error('Session expired — please sign in again');
   }
 
-  const res = await fetch(CONFIG.apiEndpoint, {
-    method:  'POST',
-    headers: {
-      'Content-Type':  'application/json',
-      'Authorization': state.tokens?.AccessToken || '',
-    },
-    body: JSON.stringify({ action, userID: state.userSub, body }),
-  });
-  const data = await res.json();
+  let res;
+  try {
+    res = await fetch(CONFIG.apiEndpoint, {
+      method:  'POST',
+      headers: {
+        'Content-Type':  'application/json',
+        'Authorization': state.tokens?.AccessToken || '',
+      },
+      body: JSON.stringify({ action, userID: state.userSub, body }),
+    });
+  } catch(networkErr) {
+    throw new Error('Network error — check your connection and try again');
+  }
+
+  let data;
+  try {
+    data = await res.json();
+  } catch(parseErr) {
+    throw new Error(`Server error (${res.status}) — please try again`);
+  }
+
   if (!res.ok) throw new Error(data.error || `HTTP ${res.status}`);
   return data;
 }
@@ -1213,10 +1228,12 @@ function handleSignOut() {
   state.userEmail = '';
   state.userSub   = '';
   state.entries   = [];
+  state.isPro     = false;
   Storage.remove('tokens');
   Storage.remove('userEmail');
   Storage.remove('userSub');
   Storage.remove('entries');
+  Storage.remove('isPro');
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-login').classList.add('active');
   showLoginTab('enter');
@@ -1258,6 +1275,7 @@ function renderRecentEntries() {
   const container = document.getElementById('recent-entries');
   container.innerHTML = '';
   const recent = [...state.entries]
+    .filter(e => !e.IsDeleted && !e.isDeleted)
     .sort((a, b) => (b.UpdatedAt || b.updatedAt || '').localeCompare(a.UpdatedAt || a.updatedAt || ''))
     .slice(0, 5);
 
@@ -1413,6 +1431,9 @@ function setEditorStatus(msg, type) {
 }
 
 async function handleSave() {
+  const saveBtn = document.querySelector('.editor-save');
+  if (saveBtn?.disabled) return;
+
   const title = document.getElementById('editor-title').value.trim();
   if (!title) return setEditorStatus('Title required to save.', 'error');
 
@@ -1437,6 +1458,7 @@ async function handleSave() {
     version:      isNew ? 0 : (state.editingEntry.Version || state.editingEntry.version || 0),
   };
 
+  if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'SAVING...'; }
   setEditorStatus('Saving...', 'info');
   try {
     const result = await apiCall('entry:save', entry);
@@ -1470,6 +1492,7 @@ async function handleSave() {
   } catch(e) {
     setEditorStatus('Save failed: ' + e.message, 'error');
     setSyncPill('failed');
+    if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'SAVE ENTRY'; }
   }
 }
 
@@ -1623,7 +1646,12 @@ async function init() {
 
     // Try to refresh tokens to verify session is still valid
     const valid = await refreshTokens().catch(() => false);
-    if (valid || tokens.AccessToken) {
+    // Proceed if refresh succeeded, or if the access token itself is still unexpired
+    // (handles the case where refresh fails due to a transient network error)
+    const accessClaims = parseJwt(state.tokens?.AccessToken || '');
+    const tokenStillValid = accessClaims.exp && accessClaims.exp > Date.now() / 1000;
+    if (valid || tokenStillValid) {
+      checkLicenseStatus();
       navigateTo('dashboard');
       loadEntriesFromCloud();
       return;
