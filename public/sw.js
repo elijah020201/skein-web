@@ -38,10 +38,12 @@ self.addEventListener('fetch', event => {
 
   const url = new URL(event.request.url);
 
-  // Never cache API calls or Cognito requests — always network
-  if (url.hostname.includes('amazonaws.com') || url.hostname.includes('execute-api')) {
-    event.respondWith(fetch(event.request));
-    return;
+  // Never cache API or auth calls — always go directly to the network
+  if (
+    url.hostname === 'execute-api.us-east-1.amazonaws.com' ||
+    url.hostname === 'cognito-idp.us-east-1.amazonaws.com'
+  ) {
+    return fetch(event.request);
   }
 
   // Cache-first for static assets, fall back to network
