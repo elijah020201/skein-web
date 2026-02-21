@@ -1821,7 +1821,7 @@ async function init() {
 // Register service worker for offline/install support
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js').catch(() => {});
+    navigator.serviceWorker.register('/sw.js', { scope: '/app/' }).catch(() => {});
   });
 }
 

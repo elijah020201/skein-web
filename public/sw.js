@@ -1,12 +1,11 @@
 // ============================================================
 //  Skein PWA — Service Worker
-//  Enables offline support and "Add to Home Screen"
+//  Scope: /app/ only — does not intercept the landing page at /
 // ============================================================
 
 const CACHE_NAME = 'skein-v2';
 const STATIC_ASSETS = [
-  '/',
-  '/index.html',
+  '/app/index.html',
   '/manifest.json',
   'https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap',
 ];
@@ -38,6 +37,9 @@ self.addEventListener('fetch', event => {
 
   const url = new URL(event.request.url);
 
+  // Restrict scope to /app/ for same-origin requests — never intercept the landing page at /
+  if (url.hostname === self.location.hostname && !url.pathname.startsWith('/app/')) return;
+
   // Never cache API or auth calls — always go directly to the network
   if (
     url.hostname === 'execute-api.us-east-1.amazonaws.com' ||
@@ -57,9 +59,9 @@ self.addEventListener('fetch', event => {
         }
         return response;
       }).catch(() => {
-        // If offline and no cache, return the main app shell
+        // If offline and no cache, return the app shell
         if (event.request.destination === 'document')
-          return caches.match('/index.html');
+          return caches.match('/app/index.html');
       });
     })
   );
