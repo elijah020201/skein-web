@@ -232,6 +232,61 @@ const M = SITE_TEXT.modals;
       line-height: 1.6;
     }
 
+    /* ---- BETA SIGNUP ---- */
+    .beta-section {
+      width: 100%;
+      border: 1px solid var(--border-gold);
+      background: var(--surface1);
+      padding: 40px 32px;
+      margin-bottom: 48px;
+      text-align: center;
+    }
+    .beta-eyebrow {
+      font-family: var(--font-display);
+      font-size: 9px;
+      letter-spacing: 0.36em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+    .beta-headline {
+      font-family: var(--font-display);
+      font-size: clamp(18px, 4vw, 24px);
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      color: var(--text-primary);
+      margin-bottom: 12px;
+    }
+    .beta-body {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.6;
+      max-width: 380px;
+      margin: 0 auto 28px;
+    }
+    .btn-beta {
+      display: inline-block;
+      padding: 16px 40px;
+      background: var(--action);
+      border: 1px solid var(--gold-bright);
+      color: var(--gold-bright);
+      font-family: var(--font-display);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s;
+      box-shadow: 0 0 24px rgba(200, 164, 74, 0.1);
+    }
+    .btn-beta:hover {
+      background: #2a1d85;
+      box-shadow: 0 0 32px rgba(200, 164, 74, 0.2);
+    }
+
     /* ---- FOOTER ---- */
     footer {
       width: 100%;
@@ -350,9 +405,6 @@ const M = SITE_TEXT.modals;
       <a href={T.cta_primary_url} target="_blank" rel="noopener noreferrer" class="btn-primary">
         {T.cta_primary}
       </a>
-      <a href={T.cta_secondary_url} target="_blank" rel="noopener noreferrer" class="btn-ghost">
-        {T.cta_secondary}
-      </a>
     </div>
 
     <!-- Feature columns -->
@@ -363,6 +415,23 @@ const M = SITE_TEXT.modals;
           <div class="feature-subtitle">{f.subtitle}</div>
         </div>
       ))}
+    </div>
+
+    <!-- Beta Signup -->
+    <div class="beta-section">
+      <div class="beta-eyebrow">◈ Now in Beta ◈</div>
+      <div class="beta-headline">Join the Inner Circle</div>
+      <p class="beta-body">
+        Be among the first seekers to shape Skein. Sign up for early access and help forge the sanctuary.
+      </p>
+      <a
+        href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAAah_UNpUMlZDV09DWklGVU1WMlpMQ09FTlhOWTAyTy4u"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="btn-beta"
+      >
+        Request Beta Access
+      </a>
     </div>
   </main>
 

@@ -1,7 +1,4 @@
 ---
-import { SITE_TEXT } from '../../content/site-text.js';
-const P = SITE_TEXT.pro;
-const L = SITE_TEXT.app_login;
 ---
 <!DOCTYPE html>
 <html lang="en">
@@ -527,6 +524,54 @@ html, body {
 .sync-pill.synced { color: #2ecc71; border-color: rgba(46, 204, 113, 0.3); }
 .sync-pill.pending { color: var(--gold-bright); border-color: var(--border-gold); }
 .sync-pill.failed { color: var(--red-bright); border-color: rgba(192, 57, 43, 0.3); }
+
+/* ============================================================
+   VIEWER SCREEN
+   ============================================================ */
+.viewer-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--text-primary);
+  margin-bottom: var(--pad-sm);
+}
+.viewer-meta {
+  font-family: var(--font-display);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  color: var(--text-faint);
+  text-transform: uppercase;
+  margin-bottom: var(--pad-md);
+}
+.viewer-tags {
+  display: flex;
+  gap: var(--pad-xs);
+  flex-wrap: wrap;
+  margin-bottom: var(--pad-lg);
+}
+.viewer-field {
+  margin-bottom: var(--pad-md);
+}
+.viewer-field-value {
+  font-family: var(--font-body);
+  font-size: 15px;
+  color: var(--text-primary);
+  line-height: 1.65;
+  white-space: pre-wrap;
+  padding: 12px var(--pad-md);
+  background: var(--surface2);
+  border: 1px solid var(--border);
+}
+.viewer-actions {
+  display: flex;
+  gap: var(--pad-sm);
+  padding: var(--pad-sm) var(--pad-md);
+  border-top: 1px solid var(--border);
+  background: var(--surface1);
+  padding-bottom: max(var(--pad-sm), env(safe-area-inset-bottom));
+  flex-shrink: 0;
+}
 </style>
 </head>
 
@@ -537,40 +582,40 @@ html, body {
        LOGIN SCREEN
        ============================================================ -->
   <div id="screen-login" class="screen active">
-    <div class="login-wordmark">{L.wordmark}</div>
-    <div class="login-tagline">{L.tagline}</div>
+    <div class="login-wordmark">SKEIN</div>
+    <div class="login-tagline">Your personal grimoire</div>
 
     <div class="login-tabs">
-      <button class="login-tab active" onclick="showLoginTab('enter')">{L.tab_enter}</button>
-      <button class="login-tab" onclick="showLoginTab('initiate')">{L.tab_initiate}</button>
+      <button class="login-tab active" onclick="showLoginTab('enter')">ENTER</button>
+      <button class="login-tab" onclick="showLoginTab('initiate')">INITIATE</button>
     </div>
 
     <div id="login-form">
       <div class="input-group">
-        <div class="label">{L.label_email}</div>
-        <input type="email" id="login-email" placeholder={L.placeholder_email} autocomplete="email">
+        <div class="label">Email Address</div>
+        <input type="email" id="login-email" placeholder="your@coven.com" autocomplete="email">
       </div>
       <div class="input-group">
-        <div class="label">{L.label_password}</div>
-        <input type="password" id="login-password" placeholder={L.placeholder_password} autocomplete="current-password">
+        <div class="label">Passphrase</div>
+        <input type="password" id="login-password" placeholder="words of power" autocomplete="current-password">
       </div>
-      <button class="btn-primary" onclick="handleLogin()">{L.btn_login}</button>
+      <button class="btn-primary" onclick="handleLogin()">OPEN THE TOME</button>
     </div>
 
     <div id="register-form" style="display:none">
       <div class="input-group">
-        <div class="label">{L.label_email}</div>
-        <input type="email" id="reg-email" placeholder={L.placeholder_email} autocomplete="email">
+        <div class="label">Email Address</div>
+        <input type="email" id="reg-email" placeholder="your@coven.com" autocomplete="email">
       </div>
       <div class="input-group">
-        <div class="label">{L.label_new_password}</div>
-        <input type="password" id="reg-password" placeholder={L.placeholder_new_password} autocomplete="new-password">
+        <div class="label">Craft a Passphrase</div>
+        <input type="password" id="reg-password" placeholder="8+ chars, uppercase &amp; symbol" autocomplete="new-password">
       </div>
       <div class="input-group">
-        <div class="label">{L.label_confirm_password}</div>
-        <input type="password" id="reg-confirm" placeholder={L.placeholder_confirm_password} autocomplete="new-password">
+        <div class="label">Confirm Passphrase</div>
+        <input type="password" id="reg-confirm" placeholder="once more, with feeling" autocomplete="new-password">
       </div>
-      <button class="btn-primary" onclick="handleRegister()">{L.btn_register}</button>
+      <button class="btn-primary" onclick="handleRegister()">BEGIN THE RITE</button>
     </div>
 
     <div id="verify-form" style="display:none">
@@ -578,10 +623,10 @@ html, body {
         A verification code has been sent to your email.
       </div>
       <div class="input-group">
-        <div class="label">{L.label_verify_code}</div>
-        <input type="text" id="verify-code" placeholder={L.placeholder_verify_code} autocomplete="one-time-code" inputmode="numeric">
+        <div class="label">Verification Code</div>
+        <input type="text" id="verify-code" placeholder="6-digit code" autocomplete="one-time-code" inputmode="numeric">
       </div>
-      <button class="btn-primary" onclick="handleVerify()">{L.btn_verify}</button>
+      <button class="btn-primary" onclick="handleVerify()">CONSECRATE THE SEAL</button>
     </div>
 
     <div id="login-status" class="status"></div>
@@ -735,6 +780,17 @@ html, body {
       </div>
       <div id="sync-status-text" class="status"></div>
 
+      <div class="section-header" style="margin-top:var(--pad-lg)">FEEDBACK</div>
+      <div style="margin-bottom:var(--pad-md)">
+        <a
+          href="https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAAah_UNpUMlZRRjlYTU1KRlVNNEw3S1ZPTU9CU0dHVS4u"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="btn-ghost"
+          style="display:block;text-align:center;text-decoration:none;width:100%"
+        >SEND FEEDBACK</a>
+      </div>
+
       <div class="section-header" style="margin-top:var(--pad-lg)">APP</div>
       <div style="background:var(--surface1);border:1px solid var(--border);padding:var(--pad-md);margin-bottom:var(--pad-xl)">
         <div class="label">Version</div>
@@ -773,48 +829,71 @@ html, body {
   <div id="screen-pro" class="screen">
     <div class="top-bar">
       <button class="back-btn" onclick="navigateBack()">← BACK</button>
-      <span class="wordmark" style="flex:1;text-align:center">{P.screen_title}</span>
+      <span class="wordmark" style="flex:1;text-align:center">SKEIN PRO</span>
       <div style="width:60px"></div>
     </div>
 
     <div class="scroll-area no-nav">
       <div style="text-align:center;padding:var(--pad-xl) 0 var(--pad-lg)">
-        <div style="font-family:var(--font-display);font-size:32px;color:var(--gold-bright);letter-spacing:0.2em;margin-bottom:var(--pad-sm)">{P.glyph}</div>
-        <div class="heading-display" style="margin-bottom:var(--pad-sm)">{P.headline}</div>
+        <div style="font-family:var(--font-display);font-size:32px;color:var(--gold-bright);letter-spacing:0.2em;margin-bottom:var(--pad-sm)">◈</div>
+        <div class="heading-display" style="margin-bottom:var(--pad-sm)">UNLOCK THE FULL GRIMOIRE</div>
         <div class="body-text" style="max-width:320px;margin:0 auto">
-          {P.description}
+          A single purchase unlocks Skein forever — across all your devices.
         </div>
       </div>
 
       <div style="background:var(--surface1);border:1px solid var(--border-gold);padding:var(--pad-lg);margin-bottom:var(--pad-lg)">
         <div style="display:flex;flex-direction:column;gap:var(--pad-sm);margin-bottom:var(--pad-lg)">
-          {P.features.map((feature: string) => (
-            <div style="display:flex;gap:var(--pad-sm);align-items:center">
-              <span style="color:var(--gold-bright);font-family:var(--font-display)">{P.glyph}</span>
-              <span class="body-text">{feature}</span>
-            </div>
-          ))}
+          <div style="display:flex;gap:var(--pad-sm);align-items:center">
+            <span style="color:var(--gold-bright);font-family:var(--font-display)">◈</span>
+            <span class="body-text">Unlimited grimoire entries</span>
+          </div>
+          <div style="display:flex;gap:var(--pad-sm);align-items:center">
+            <span style="color:var(--gold-bright);font-family:var(--font-display)">◈</span>
+            <span class="body-text">Cloud sync across all devices</span>
+          </div>
+          <div style="display:flex;gap:var(--pad-sm);align-items:center">
+            <span style="color:var(--gold-bright);font-family:var(--font-display)">◈</span>
+            <span class="body-text">Desktop + Android + iOS (PWA)</span>
+          </div>
+          <div style="display:flex;gap:var(--pad-sm);align-items:center">
+            <span style="color:var(--gold-bright);font-family:var(--font-display)">◈</span>
+            <span class="body-text">All future updates included</span>
+          </div>
         </div>
-        <!-- Gumroad checkout button — replace href with your Gumroad product URL -->
+        <!-- Gumroad checkout button -->
         <a
           class="btn-primary"
           style="display:block;text-align:center;text-decoration:none;cursor:pointer"
-          href="https://skein.gumroad.com/l/pro"
+          href="https://skeinapp.gumroad.com/l/iofbgy"
           target="_blank"
           id="gr-checkout-btn"
         >PURCHASE SKEIN PRO</a>
       </div>
 
       <div style="background:var(--surface1);border:1px solid var(--border);padding:var(--pad-md);margin-bottom:var(--pad-md)">
-        <div class="section-header" style="margin-bottom:var(--pad-md)">{P.already_purchased_label}</div>
+        <div class="section-header" style="margin-bottom:var(--pad-md)">ALREADY PURCHASED?</div>
         <div class="input-group">
           <div class="label">Gumroad License Key</div>
           <input type="text" id="license-key-input" placeholder="XXXXXXXX-XXXXXXXX-XXXXXXXX-XXXXXXXX" autocomplete="off">
         </div>
-        <button class="btn-ghost" style="width:100%" onclick="activateLicense()">{P.btn_activate_license}</button>
+        <button class="btn-ghost" style="width:100%" onclick="activateLicense()">ACTIVATE LICENSE</button>
         <div id="license-status" class="status"></div>
       </div>
     </div>
+  </div>
+
+  <!-- ============================================================
+       VIEWER SCREEN (read-only entry view)
+       ============================================================ -->
+  <div id="screen-viewer" class="screen">
+    <div class="top-bar">
+      <button class="back-btn" onclick="navigateBack()">← BACK</button>
+      <span id="viewer-title-bar" class="heading-section" style="flex:1;text-align:center">ENTRY</span>
+      <button class="btn-ghost" style="font-size:9px;padding:4px 10px" onclick="editCurrentEntry()">EDIT</button>
+    </div>
+
+    <div class="scroll-area no-nav" id="viewer-scroll"></div>
   </div>
 
 </div><!-- #app -->
@@ -1245,7 +1324,7 @@ function handleSignOut() {
 function renderEntryCard(entry, container) {
   const card = document.createElement('div');
   card.className = 'entry-card';
-  card.onclick = () => openEditor(entry);
+  card.onclick = () => openViewer(entry);
 
   const pip = document.createElement('div');
   pip.className = 'type-pip';
@@ -1414,6 +1493,79 @@ function openEditor(entry) {
   navigateTo('editor');
 }
 
+function openViewer(entry) {
+  state.editingEntry = entry;
+  const type  = entry.EntryType || entry.entryType || 'Journal Entry';
+  const title = entry.Title || entry.title || 'Untitled';
+  const tags  = entry.Tags || entry.tags || [];
+  const date  = (entry.UpdatedAt || entry.updatedAt || '').substring(0, 10);
+  const td    = entry.TemplateData || entry.templateData || {};
+
+  document.getElementById('viewer-title-bar').textContent = type.toUpperCase();
+
+  const scroll = document.getElementById('viewer-scroll');
+  scroll.innerHTML = '';
+
+  // Coloured type accent bar
+  const bar = document.createElement('div');
+  bar.style.cssText = `height:3px;background:${TYPE_COLORS[type] || '#444'};margin-bottom:var(--pad-lg)`;
+  scroll.appendChild(bar);
+
+  // Title
+  const titleEl = document.createElement('div');
+  titleEl.className = 'viewer-title';
+  titleEl.textContent = title;
+  scroll.appendChild(titleEl);
+
+  // Meta (type · date)
+  const metaEl = document.createElement('div');
+  metaEl.className = 'viewer-meta';
+  metaEl.textContent = `${type.toUpperCase()} · ${date}`;
+  scroll.appendChild(metaEl);
+
+  // Tags
+  if (tags.length > 0) {
+    const tagsDiv = document.createElement('div');
+    tagsDiv.className = 'viewer-tags';
+    tags.forEach(tag => {
+      const chip = document.createElement('span');
+      chip.className = 'chip';
+      chip.style.fontSize = '9px';
+      chip.textContent = tag.toUpperCase();
+      tagsDiv.appendChild(chip);
+    });
+    scroll.appendChild(tagsDiv);
+  }
+
+  // Type-specific fields
+  const fields = TYPE_FIELDS[type] || [];
+  fields.forEach(field => {
+    const val = td[field.key];
+    if (!val) return;
+    const group = document.createElement('div');
+    group.className = 'viewer-field';
+    const lbl = document.createElement('div');
+    lbl.className = 'label';
+    lbl.textContent = field.label;
+    const valEl = document.createElement('div');
+    valEl.className = 'viewer-field-value';
+    valEl.textContent = val;
+    group.appendChild(lbl);
+    group.appendChild(valEl);
+    scroll.appendChild(group);
+  });
+
+  scroll.scrollTop = 0;
+  navigateTo('viewer');
+}
+
+function editCurrentEntry() {
+  if (!state.editingEntry) return;
+  // Remove 'viewer' from history so Back after save skips back to the list
+  if (screenHistory[screenHistory.length - 1] === 'viewer') screenHistory.pop();
+  openEditor(state.editingEntry);
+}
+
 function getFieldValues() {
   const fields = TYPE_FIELDS[state.editingType] || [];
   const data = {};
@@ -1460,6 +1612,7 @@ async function handleSave() {
 
   if (saveBtn) { saveBtn.disabled = true; saveBtn.textContent = 'SAVING...'; }
   setEditorStatus('Saving...', 'info');
+  let saved = false;
   try {
     const result = await apiCall('entry:save', entry);
     // Update local state
@@ -1488,12 +1641,14 @@ async function handleSave() {
     Storage.save('entries', state.entries);
     setSyncPill('synced');
     setEditorStatus('Saved.', 'success');
-    setTimeout(() => navigateBack(), 600);
+    saved = true;
   } catch(e) {
     setEditorStatus('Save failed: ' + e.message, 'error');
     setSyncPill('failed');
+  } finally {
     if (saveBtn) { saveBtn.disabled = false; saveBtn.textContent = 'SAVE ENTRY'; }
   }
+  if (saved) setTimeout(() => navigateBack(), 600);
 }
 
 async function handleDelete() {
@@ -1602,8 +1757,9 @@ async function activateLicense() {
   }
   setLicenseStatus('Validating...', 'info');
   try {
-    // Verify with Gumroad's license API via backend proxy
-    const result = await apiCall('license:validate', { licenseKey: key, provider: 'gumroad' });
+    // Verify with Gumroad's license API via backend proxy.
+    // Lambda DEV_MODE check should accept keys from product: skeinapp.gumroad.com/l/iofbgy
+    const result = await apiCall('license:validate', { licenseKey: key, provider: 'gumroad', productId: 'iofbgy' });
     if (result.isPro) {
       state.isPro = true;
       Storage.save('isPro', true);
