@@ -17,7 +17,7 @@ export const SITE_TEXT = {
     tagline2:   'woven securely into the cloud.',
 
     cta_primary:      'Join the Coven',
-    cta_primary_url:  '/app/index.html',
+    cta_primary_url:  'https://discord.gg/bBKz4fBKUK',
 
     cta_secondary:     'Inner Circle Waitlist',
     cta_secondary_url: 'https://forms.office.com/Pages/ResponsePage.aspx?id=DQSIkWdsW0yxEjajBLZtrQAAAAAAAAAAAAMAAah_UNpUMlZDV09DWklGVU1WMlpMQ09FTlhOWTAyTy4u',
