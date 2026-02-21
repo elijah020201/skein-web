@@ -3,7 +3,7 @@
 //  Enables offline support and "Add to Home Screen"
 // ============================================================
 
-const CACHE_NAME = 'skein-v1';
+const CACHE_NAME = 'skein-v2';
 const STATIC_ASSETS = [
   '/',
   '/index.html',
