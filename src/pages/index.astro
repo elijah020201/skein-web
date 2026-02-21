@@ -23,16 +23,6 @@ const M = SITE_TEXT.modals;
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet" />
 
-  <script is:inline>
-    if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => {
-        navigator.serviceWorker.register('/sw.js')
-          .then(() => console.log('Skein Sanctuary: Online'))
-          .catch(() => {});
-      });
-    }
-  </script>
-
   <style is:inline>
     /* ============================================================
        CELESTIAL DESIGN SYSTEM — matches the Unreal app palette
@@ -402,7 +392,7 @@ const M = SITE_TEXT.modals;
 
     <!-- CTAs -->
     <div class="cta-row">
-      <a href={T.cta_primary_url} target="_blank" rel="noopener noreferrer" class="btn-primary">
+      <a href={T.cta_primary_url} class="btn-primary">
         {T.cta_primary}
       </a>
       <a href={T.cta_secondary_url} target="_blank" rel="noopener noreferrer" class="btn-ghost">
